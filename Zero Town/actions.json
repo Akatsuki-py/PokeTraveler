@@ -1,0 +1,10 @@
+{
+    "actions": [
+        {
+            "x": 6,
+            "y": 4,
+            "type": "text",
+            "value": "Zero Town"
+        }
+    ]
+}
