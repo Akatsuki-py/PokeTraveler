@@ -85,7 +85,7 @@ func render(screen *ebiten.Image) error {
 				} else if object != nil {
 					game.Mode = modeWindow
 					object.SetDirectionByPoint(game.Ethan.X, game.Ethan.Y)
-					win = window.NewWindow(object.Text)
+					win = window.New(object.Text)
 					win.RenderText(screen)
 				}
 			}

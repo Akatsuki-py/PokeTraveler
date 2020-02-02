@@ -7,12 +7,14 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
+// Window - ウィンドウをつかさどる構造体
 type Window struct {
 	Text []string
 	Page uint
 }
 
-func NewWindow(text []string) *Window {
+// New - コンストラクタ
+func New(text []string) *Window {
 	return &Window{
 		Text: text,
 		Page: 0,
