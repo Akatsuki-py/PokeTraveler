@@ -11,12 +11,17 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
+const (
+	modeStage = iota
+	modeWindow
+)
+
 // Game ゲーム情報を管理する
 type Game struct {
 	Count int
 	Stage stage.Stage
 	Ethan ethan.Ethan
-	Mode  string
+	Mode  int
 }
 
 var game Game
@@ -26,7 +31,7 @@ var lastAction int64
 func initGame(game *Game) {
 	game.Count = 0
 	game.Ethan.Init(64, 64)
-	game.Mode = "stage"
+	game.Mode = modeStage
 }
 
 func render(screen *ebiten.Image) error {
@@ -41,14 +46,14 @@ func render(screen *ebiten.Image) error {
 	renderStage(screen)
 
 	// オブジェクトの動作
-	if game.Mode == "stage" {
+	if game.Mode == modeStage {
 		moveObject()
 	}
 
 	renderObject(screen)
 
 	switch game.Mode {
-	case "stage":
+	case modeStage:
 		if game.Ethan.Moving() {
 			game.Ethan.GoAhead()
 
@@ -79,7 +84,7 @@ func render(screen *ebiten.Image) error {
 						fmt.Println(action.Value)
 					}
 				} else if object != nil {
-					game.Mode = "window"
+					game.Mode = modeWindow
 					object.SetDirectionByPoint(game.Ethan.X, game.Ethan.Y)
 					win = window.NewWindow(object.Text)
 					win.RenderText(screen)
@@ -94,11 +99,11 @@ func render(screen *ebiten.Image) error {
 				}
 			}
 		}
-	case "window":
+	case modeWindow:
 		win.RenderText(screen)
 		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
 			if win.IsEnd() {
-				game.Mode = "stage"
+				game.Mode = modeStage
 			} else {
 				win.Page++
 				win.RenderText(screen)
