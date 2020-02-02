@@ -3,6 +3,8 @@ package char
 import (
 	"fmt"
 
+	"demo/util"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
@@ -98,7 +100,7 @@ func RenderString(target *ebiten.Image, str string, x, y float64) {
 		}
 		x := startX + float64(col*8)
 		y += float64(row * 8)
-		renderChar(target, char, x, y)
+		RenderChar(target, char, x, y)
 
 		col++
 	}

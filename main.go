@@ -1,6 +1,7 @@
 package main
 
 import (
+	"demo/char"
 	"demo/ethan"
 	"demo/object"
 	"demo/stage"
@@ -31,6 +32,8 @@ func initGame(game *Game) {
 	game.Count = 0
 	game.Ethan = *ethan.New(64, 64)
 	game.Mode = modeStage
+
+	char.Init()
 }
 
 func render(screen *ebiten.Image) error {
@@ -86,7 +89,7 @@ func render(screen *ebiten.Image) error {
 					game.Mode = modeWindow
 					object.SetDirectionByPoint(game.Ethan.X, game.Ethan.Y)
 					win = window.New(object.Text)
-					win.RenderText(screen)
+					win.Render(screen)
 				}
 			}
 
@@ -99,13 +102,13 @@ func render(screen *ebiten.Image) error {
 			}
 		}
 	case modeWindow:
-		win.RenderText(screen)
+		win.Render(screen)
 		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
 			if win.IsEnd() {
 				game.Mode = modeStage
 			} else {
 				win.Page++
-				win.RenderText(screen)
+				win.Render(screen)
 			}
 		}
 	}
