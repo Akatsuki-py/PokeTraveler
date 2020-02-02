@@ -6,7 +6,6 @@ import (
 	"demo/stage"
 	"demo/window"
 	"fmt"
-	"time"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -26,7 +25,7 @@ type Game struct {
 
 var game Game
 var win *window.Window
-var lastAction int64
+var lastAction int
 
 func initGame(game *Game) {
 	game.Count = 0
@@ -176,11 +175,10 @@ func btnA() bool {
 }
 
 func isActionOK() bool {
-	now := time.Now().UnixNano()
-	delta := now - lastAction
-	coolTime := int64(1000 * 100000 * 3)
+	delta := game.Count - lastAction
+	coolTime := 17 // 17フレーム
 	if delta > coolTime {
-		lastAction = now
+		lastAction = game.Count
 		return true
 	}
 
