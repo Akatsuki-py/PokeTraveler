@@ -114,16 +114,10 @@ func (object *Object) Set(x, y int) {
 }
 
 // SetDirection set object direction
-func (object *Object) SetDirection(direction string) {
+func (object *Object) SetDirection(direction int) {
 	switch direction {
-	case "Up", "up":
-		object.Direction = Up
-	case "Down", "down":
-		object.Direction = Down
-	case "Right", "right":
-		object.Direction = Right
-	case "Left", "left":
-		object.Direction = Left
+	case Up, Down, Right, Left:
+		object.Direction = direction
 	}
 }
 
@@ -142,15 +136,15 @@ func (object *Object) SetDirectionByPoint(x, y int) {
 }
 
 // Ahead オブジェクトの一マス前の座標を返す
-func (object *Object) Ahead(direction string) (x, y int) {
+func (object *Object) Ahead(direction int) (x, y int) {
 	switch direction {
-	case "up":
+	case Up:
 		return object.X, object.Y - 16
-	case "down":
+	case Down:
 		return object.X, object.Y + 16
-	case "right":
+	case Right:
 		return object.X + 16, object.Y
-	case "left":
+	case Left:
 		return object.X - 16, object.Y
 	default:
 		switch object.Direction {
@@ -212,25 +206,25 @@ func (object *Object) Moving() bool {
 }
 
 // RandamDirection オブジェクトの向きをランダムに決定して、かつその方向に進行可能か返す
-func RandamDirection() (direction string) {
+func RandamDirection() (direction int) {
 	// 次の向きをランダムに決定
 	d := (time.Now().UnixNano() / 1000) % 4
 	switch d {
 	case 0:
-		direction = "down"
+		direction = Down
 	case 1:
-		direction = "up"
+		direction = Up
 	case 2:
-		direction = "right"
+		direction = Right
 	case 3:
-		direction = "left"
+		direction = Left
 	}
 
 	return direction
 }
 
 // AheadOK その方向に進行可能かどうか(ブロックは考慮しない)
-func (object *Object) AheadOK(direction string) bool {
+func (object *Object) AheadOK(direction int) bool {
 	x, y := object.Ahead(direction)
 	enable := false
 	for _, square := range object.Territory {

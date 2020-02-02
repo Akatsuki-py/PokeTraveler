@@ -29,7 +29,7 @@ var lastAction int
 
 func initGame(game *Game) {
 	game.Count = 0
-	game.Ethan.Init(64, 64)
+	game.Ethan = *ethan.New(64, 64)
 	game.Mode = modeStage
 }
 
@@ -63,16 +63,16 @@ func render(screen *ebiten.Image) error {
 			goAhead := false
 			switch {
 			case ebiten.IsKeyPressed(ebiten.KeyUp):
-				game.Ethan.SetDirection("up")
+				game.Ethan.SetDirection(object.Up)
 				goAhead = true
 			case ebiten.IsKeyPressed(ebiten.KeyDown):
-				game.Ethan.SetDirection("down")
+				game.Ethan.SetDirection(object.Down)
 				goAhead = true
 			case ebiten.IsKeyPressed(ebiten.KeyRight):
-				game.Ethan.SetDirection("right")
+				game.Ethan.SetDirection(object.Right)
 				goAhead = true
 			case ebiten.IsKeyPressed(ebiten.KeyLeft):
-				game.Ethan.SetDirection("left")
+				game.Ethan.SetDirection(object.Left)
 				goAhead = true
 			case btnA() && isActionOK():
 				propety := game.Stage.GetProperty(game.Ethan.Ahead())
@@ -136,7 +136,7 @@ func moveObject() {
 
 		if game.Count%120 == 0 {
 			direction := object.RandamDirection()
-			aheadX, aheadY := (obj).Ahead(direction)
+			aheadX, aheadY := obj.Ahead(direction)
 			property := game.Stage.GetProperty(aheadX, aheadY)
 			object := game.Stage.GetObject(aheadX, aheadY)
 			enable := obj.AheadOK(direction)

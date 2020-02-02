@@ -20,8 +20,9 @@ type Ethan struct {
 	direction int
 }
 
-// Init ethan
-func (ethan *Ethan) Init(x, y int) {
+// New - コンストラクタ
+func New(x, y int) (ethan *Ethan) {
+	ethan = &Ethan{}
 	ethan.Image[0], _, _ = ebitenutil.NewImageFromFile("ethan/ethan00.png", ebiten.FilterDefault)
 	ethan.Image[1], _, _ = ebitenutil.NewImageFromFile("ethan/ethan01.png", ebiten.FilterDefault)
 	ethan.Image[2], _, _ = ebitenutil.NewImageFromFile("ethan/ethan02.png", ebiten.FilterDefault)
@@ -36,6 +37,7 @@ func (ethan *Ethan) Init(x, y int) {
 	ethan.X = x
 	ethan.Y = y
 	ethan.direction = Down
+	return ethan
 }
 
 // Avatar Ethan Avatar image
@@ -85,7 +87,7 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 	return ethan.Image[0]
 }
 
-// Set Ethan position. If -1 is set, position is unchanged.
+// Set - 主人公の位置を指定します。座標の変化量ではなく、移動先の座標を指定します。 -1が引数に渡された場合は変動しません。
 func (ethan *Ethan) Set(x, y int) {
 	if x >= 0 {
 		ethan.X = x
@@ -95,21 +97,15 @@ func (ethan *Ethan) Set(x, y int) {
 	}
 }
 
-// SetDirection set ethan direction
-func (ethan *Ethan) SetDirection(direction string) {
+// SetDirection - 主人公の方向を決定します。
+func (ethan *Ethan) SetDirection(direction int) {
 	switch direction {
-	case "Up", "up":
-		ethan.direction = Up
-	case "Down", "down":
-		ethan.direction = Down
-	case "Right", "right":
-		ethan.direction = Right
-	case "Left", "left":
-		ethan.direction = Left
+	case Up, Down, Right, Left:
+		ethan.direction = direction
 	}
 }
 
-// Ahead 主人公の一マス前の座標を返す
+// Ahead - 主人公の一マス前の座標を返す
 func (ethan *Ethan) Ahead() (x, y int) {
 	switch ethan.direction {
 	case Up:
@@ -124,7 +120,7 @@ func (ethan *Ethan) Ahead() (x, y int) {
 	return -17, -17
 }
 
-// GoAhead 前に進む
+// GoAhead - 主人公を前に進ませる
 func (ethan *Ethan) GoAhead() {
 	switch ethan.direction {
 	case Up:
@@ -138,36 +134,36 @@ func (ethan *Ethan) GoAhead() {
 	}
 }
 
-// GoUp ethan move up
+// GoUp - 上に進む
 func (ethan *Ethan) GoUp() {
 	ethan.direction = Up
 	ethan.Y--
 }
 
-// GoDown ethan move down
+// GoDown - 下に進む
 func (ethan *Ethan) GoDown() {
 	ethan.direction = Down
 	ethan.Y++
 }
 
-// GoRight ethan move right
+// GoRight - 右に進む
 func (ethan *Ethan) GoRight() {
 	ethan.direction = Right
 	ethan.X++
 }
 
-// GoLeft ethan move left
+// GoLeft - 下に進む
 func (ethan *Ethan) GoLeft() {
 	ethan.direction = Left
 	ethan.X--
 }
 
-// Moving if Ethan is moving?
+// Moving - 主人公が現在マス目間を移動中か
 func (ethan *Ethan) Moving() bool {
 	return ethan.X%16 != 0 || ethan.Y%16 != 0
 }
 
-// Exist 指定した場所に主人公がいるか
+// Exist - 指定した場所に主人公がいるかを移動も加味して返す
 func (ethan *Ethan) Exist(x, y int) bool {
 	exist := false
 

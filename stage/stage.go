@@ -18,7 +18,7 @@ import (
 各タイルのプロパティ一覧
 */
 
-// Stage マップのデータ
+// Stage - マップのデータ
 type Stage struct {
 	Width      int              // マップの横幅(タイル)
 	Height     int              // マップの立幅(タイル)
@@ -30,13 +30,13 @@ type Stage struct {
 	Warps      []*Warp
 }
 
-// Property タイルのプロパティ
+// Property - タイルのプロパティ
 type Property struct {
 	Block  int // 通行可能か
 	Action int // このタイルに対して何らかのアクションが可能か？
 }
 
-// Load マップを読み込む関数
+// Load - マップを読み込む関数
 func (stage *Stage) Load(stagename string) {
 	filename := fmt.Sprintf("%s/stage.json", stagename)
 	file, err := ioutil.ReadFile(filename)
@@ -74,7 +74,7 @@ func (stage *Stage) Load(stagename string) {
 	stage.loadWarps(fmt.Sprintf("%s/warp.json", stagename))
 }
 
-// GetProperty Get tile property
+// GetProperty - Get tile property
 func (stage *Stage) GetProperty(x, y int) (target *Property) {
 	target = &Property{Block: 1}
 
@@ -97,7 +97,7 @@ func (stage *Stage) GetProperty(x, y int) (target *Property) {
 	return target
 }
 
-// GetObject Get Object
+// GetObject - Get Object
 func (stage *Stage) GetObject(x, y int) (target *object.Object) {
 	for _, o := range stage.Objects {
 		switch o.Direction {
@@ -126,7 +126,7 @@ func (stage *Stage) GetObject(x, y int) (target *object.Object) {
 	return target
 }
 
-// GetAction Get Action
+// GetAction - Get Action
 func (stage *Stage) GetAction(x, y int) (target *Action) {
 	for _, action := range stage.Actions {
 		if action.X == x/16 && action.Y == y/16 {
@@ -137,7 +137,7 @@ func (stage *Stage) GetAction(x, y int) (target *Action) {
 	return target
 }
 
-// GetWarp Get warp point
+// GetWarp - Get warp point
 func (stage *Stage) GetWarp(x, y int) (target *Warp) {
 	for _, warp := range stage.Warps {
 		if warp.X*16 == x && warp.Y*16 == y {
