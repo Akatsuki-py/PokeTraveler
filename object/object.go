@@ -17,12 +17,12 @@ const (
 	Left
 )
 
-// Objects JSONから取得するための構造体
+// Objects - JSONから取得するための構造体
 type Objects struct {
 	List []*Object `json:"objects"`
 }
 
-// Object オブジェクトデータ
+// Object - オブジェクトデータ
 type Object struct {
 	ID        int    `json:"id"`    // object ID
 	Start     [2]int `json:"start"` // start point
@@ -35,7 +35,7 @@ type Object struct {
 	Image     [10]*ebiten.Image // object avatar data
 }
 
-// Load オブジェクトデータを読み込む
+// Load - オブジェクトデータを読み込む
 func Load(objfile string) []*Object {
 	file, err := ioutil.ReadFile(objfile)
 	if err != nil {
@@ -56,7 +56,7 @@ func Load(objfile string) []*Object {
 	return objects.List
 }
 
-// Avatar 現在のイメージデータを返す
+// Avatar - 現在のイメージデータを返す
 func (object *Object) Avatar() *ebiten.Image {
 	switch object.Direction {
 	case Up:
@@ -103,7 +103,7 @@ func (object *Object) Avatar() *ebiten.Image {
 	return object.Image[0]
 }
 
-// Set object position. If -1 is set, position is unchanged.
+// Set - object position. If -1 is set, position is unchanged.
 func (object *Object) Set(x, y int) {
 	if x >= 0 {
 		object.X = x
@@ -113,7 +113,7 @@ func (object *Object) Set(x, y int) {
 	}
 }
 
-// SetDirection set object direction
+// SetDirection - set object direction
 func (object *Object) SetDirection(direction int) {
 	switch direction {
 	case Up, Down, Right, Left:
@@ -121,7 +121,7 @@ func (object *Object) SetDirection(direction int) {
 	}
 }
 
-// SetDirectionByPoint set object direction by point
+// SetDirectionByPoint - set object direction by point
 func (object *Object) SetDirectionByPoint(x, y int) {
 	switch {
 	case y*16 > object.Y*16:
@@ -135,7 +135,7 @@ func (object *Object) SetDirectionByPoint(x, y int) {
 	}
 }
 
-// Ahead オブジェクトの一マス前の座標を返す
+// Ahead - オブジェクトの一マス前の座標を返す
 func (object *Object) Ahead(direction int) (x, y int) {
 	switch direction {
 	case Up:
@@ -162,7 +162,7 @@ func (object *Object) Ahead(direction int) (x, y int) {
 	}
 }
 
-// GoAhead 前に進む
+// GoAhead - 前に進む
 func (object *Object) GoAhead() {
 	switch object.Direction {
 	case Up:
@@ -176,36 +176,36 @@ func (object *Object) GoAhead() {
 	}
 }
 
-// GoUp object move up
+// GoUp - object move up
 func (object *Object) GoUp() {
 	object.Direction = Up
 	object.Y--
 }
 
-// GoDown object move down
+// GoDown - object move down
 func (object *Object) GoDown() {
 	object.Direction = Down
 	object.Y++
 }
 
-// GoRight object move right
+// GoRight - object move right
 func (object *Object) GoRight() {
 	object.Direction = Right
 	object.X++
 }
 
-// GoLeft object move left
+// GoLeft - object move left
 func (object *Object) GoLeft() {
 	object.Direction = Left
 	object.X--
 }
 
-// Moving オブジェクトが移動モーション中か
+// Moving - オブジェクトが移動モーション中か
 func (object *Object) Moving() bool {
 	return object.X%16 != 0 || object.Y%16 != 0
 }
 
-// RandamDirection オブジェクトの向きをランダムに決定して、かつその方向に進行可能か返す
+// RandamDirection - オブジェクトの向きをランダムに決定して、かつその方向に進行可能か返す
 func RandamDirection() (direction int) {
 	// 次の向きをランダムに決定
 	d := (time.Now().UnixNano() / 1000) % 4
@@ -223,7 +223,7 @@ func RandamDirection() (direction int) {
 	return direction
 }
 
-// AheadOK その方向に進行可能かどうか(ブロックは考慮しない)
+// AheadOK - その方向に進行可能かどうか(ブロックは考慮しない)
 func (object *Object) AheadOK(direction int) bool {
 	x, y := object.Ahead(direction)
 	enable := false
