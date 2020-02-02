@@ -5,12 +5,19 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
+const (
+	Up = iota
+	Down
+	Right
+	Left
+)
+
 // Ethan 主人公のデータ
 type Ethan struct {
 	Image     [10]*ebiten.Image
 	X         int
 	Y         int
-	direction string
+	direction int
 }
 
 // Init ethan
@@ -28,13 +35,13 @@ func (ethan *Ethan) Init(x, y int) {
 
 	ethan.X = x
 	ethan.Y = y
-	ethan.direction = "down"
+	ethan.direction = Down
 }
 
 // Avatar Ethan Avatar image
 func (ethan *Ethan) Avatar() *ebiten.Image {
 	switch ethan.direction {
-	case "up":
+	case Up:
 		switch {
 		case ethan.Y%16 == 0:
 			return ethan.Image[1]
@@ -45,7 +52,7 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 		default:
 			return ethan.Image[1]
 		}
-	case "down":
+	case Down:
 		switch {
 		case ethan.Y%16 == 0:
 			return ethan.Image[0]
@@ -56,7 +63,7 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 		default:
 			return ethan.Image[0]
 		}
-	case "right":
+	case Right:
 		switch {
 		case ethan.X%16 == 0:
 			return ethan.Image[6]
@@ -65,7 +72,7 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 		default:
 			return ethan.Image[6]
 		}
-	case "left":
+	case Left:
 		switch {
 		case ethan.X%16 == 0:
 			return ethan.Image[2]
@@ -92,26 +99,26 @@ func (ethan *Ethan) Set(x, y int) {
 func (ethan *Ethan) SetDirection(direction string) {
 	switch direction {
 	case "Up", "up":
-		ethan.direction = "up"
+		ethan.direction = Up
 	case "Down", "down":
-		ethan.direction = "down"
+		ethan.direction = Down
 	case "Right", "right":
-		ethan.direction = "right"
+		ethan.direction = Right
 	case "Left", "left":
-		ethan.direction = "left"
+		ethan.direction = Left
 	}
 }
 
 // Ahead 主人公の一マス前の座標を返す
 func (ethan *Ethan) Ahead() (x, y int) {
 	switch ethan.direction {
-	case "up":
+	case Up:
 		return ethan.X, ethan.Y - 16
-	case "down":
+	case Down:
 		return ethan.X, ethan.Y + 16
-	case "right":
+	case Right:
 		return ethan.X + 16, ethan.Y
-	case "left":
+	case Left:
 		return ethan.X - 16, ethan.Y
 	}
 	return -17, -17
@@ -120,38 +127,38 @@ func (ethan *Ethan) Ahead() (x, y int) {
 // GoAhead 前に進む
 func (ethan *Ethan) GoAhead() {
 	switch ethan.direction {
-	case "up":
+	case Up:
 		ethan.GoUp()
-	case "down":
+	case Down:
 		ethan.GoDown()
-	case "right":
+	case Right:
 		ethan.GoRight()
-	case "left":
+	case Left:
 		ethan.GoLeft()
 	}
 }
 
 // GoUp ethan move up
 func (ethan *Ethan) GoUp() {
-	ethan.direction = "up"
+	ethan.direction = Up
 	ethan.Y--
 }
 
 // GoDown ethan move down
 func (ethan *Ethan) GoDown() {
-	ethan.direction = "down"
+	ethan.direction = Down
 	ethan.Y++
 }
 
 // GoRight ethan move right
 func (ethan *Ethan) GoRight() {
-	ethan.direction = "right"
+	ethan.direction = Right
 	ethan.X++
 }
 
 // GoLeft ethan move left
 func (ethan *Ethan) GoLeft() {
-	ethan.direction = "left"
+	ethan.direction = Left
 	ethan.X--
 }
 
@@ -168,16 +175,16 @@ func (ethan *Ethan) Exist(x, y int) bool {
 	existY := false
 	if ethan.Moving() {
 		switch ethan.direction {
-		case "up":
+		case Up:
 			existX = ethan.X/16 == x/16
 			existY = (ethan.Y-15)/16 == y/16
-		case "down":
+		case Down:
 			existX = ethan.X/16 == x/16
 			existY = (ethan.Y+15)/16 == y/16
-		case "right":
+		case Right:
 			existX = (ethan.X+15)/16 == x/16
 			existY = ethan.Y/16 == y/16
-		case "left":
+		case Left:
 			existX = (ethan.X-15)/16 == x/16
 			existY = ethan.Y/16 == y/16
 		}

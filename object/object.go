@@ -10,6 +10,13 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
+const (
+	Up = iota
+	Down
+	Right
+	Left
+)
+
 // Objects JSONから取得するための構造体
 type Objects struct {
 	List []*Object `json:"objects"`
@@ -22,7 +29,7 @@ type Object struct {
 	X         int
 	Y         int
 	Territory [][2]int          `json:"territory"` // move range
-	Direction string            `json:"direction"` // current direction
+	Direction int               `json:"direction"` // current direction
 	Type      string            `json:"type"`      // object type e.g. npc,trainer,etc...
 	Text      []string          `json:"text"`      // what object says
 	Image     [10]*ebiten.Image // object avatar data
@@ -52,7 +59,7 @@ func Load(objfile string) []*Object {
 // Avatar 現在のイメージデータを返す
 func (object *Object) Avatar() *ebiten.Image {
 	switch object.Direction {
-	case "up":
+	case Up:
 		switch {
 		case object.Y%16 == 0:
 			return object.Image[1]
@@ -63,7 +70,7 @@ func (object *Object) Avatar() *ebiten.Image {
 		default:
 			return object.Image[1]
 		}
-	case "down":
+	case Down:
 		switch {
 		case object.Y%16 == 0:
 			return object.Image[0]
@@ -74,7 +81,7 @@ func (object *Object) Avatar() *ebiten.Image {
 		default:
 			return object.Image[0]
 		}
-	case "right":
+	case Right:
 		switch {
 		case object.X%16 == 0:
 			return object.Image[6]
@@ -83,7 +90,7 @@ func (object *Object) Avatar() *ebiten.Image {
 		default:
 			return object.Image[6]
 		}
-	case "left":
+	case Left:
 		switch {
 		case object.X%16 == 0:
 			return object.Image[2]
@@ -110,13 +117,13 @@ func (object *Object) Set(x, y int) {
 func (object *Object) SetDirection(direction string) {
 	switch direction {
 	case "Up", "up":
-		object.Direction = "up"
+		object.Direction = Up
 	case "Down", "down":
-		object.Direction = "down"
+		object.Direction = Down
 	case "Right", "right":
-		object.Direction = "right"
+		object.Direction = Right
 	case "Left", "left":
-		object.Direction = "left"
+		object.Direction = Left
 	}
 }
 
@@ -124,13 +131,13 @@ func (object *Object) SetDirection(direction string) {
 func (object *Object) SetDirectionByPoint(x, y int) {
 	switch {
 	case y*16 > object.Y*16:
-		object.Direction = "down"
+		object.Direction = Down
 	case y*16 < object.Y*16:
-		object.Direction = "up"
+		object.Direction = Up
 	case x*16 > object.X*16:
-		object.Direction = "right"
+		object.Direction = Right
 	case x*16 < object.X*16:
-		object.Direction = "left"
+		object.Direction = Left
 	}
 }
 
@@ -147,13 +154,13 @@ func (object *Object) Ahead(direction string) (x, y int) {
 		return object.X - 16, object.Y
 	default:
 		switch object.Direction {
-		case "up":
+		case Up:
 			return object.X, object.Y - 16
-		case "down":
+		case Down:
 			return object.X, object.Y + 16
-		case "right":
+		case Right:
 			return object.X + 16, object.Y
-		case "left":
+		case Left:
 			return object.X - 16, object.Y
 		default:
 			return -17, -17
@@ -164,38 +171,38 @@ func (object *Object) Ahead(direction string) (x, y int) {
 // GoAhead 前に進む
 func (object *Object) GoAhead() {
 	switch object.Direction {
-	case "up":
+	case Up:
 		object.GoUp()
-	case "down":
+	case Down:
 		object.GoDown()
-	case "right":
+	case Right:
 		object.GoRight()
-	case "left":
+	case Left:
 		object.GoLeft()
 	}
 }
 
 // GoUp object move up
 func (object *Object) GoUp() {
-	object.Direction = "up"
+	object.Direction = Up
 	object.Y--
 }
 
 // GoDown object move down
 func (object *Object) GoDown() {
-	object.Direction = "down"
+	object.Direction = Down
 	object.Y++
 }
 
 // GoRight object move right
 func (object *Object) GoRight() {
-	object.Direction = "right"
+	object.Direction = Right
 	object.X++
 }
 
 // GoLeft object move left
 func (object *Object) GoLeft() {
-	object.Direction = "left"
+	object.Direction = Left
 	object.X--
 }
 

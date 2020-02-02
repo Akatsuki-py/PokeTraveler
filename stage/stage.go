@@ -99,23 +99,23 @@ func (stage *Stage) GetProperty(x, y int) (target *Property) {
 
 // GetObject Get Object
 func (stage *Stage) GetObject(x, y int) (target *object.Object) {
-	for _, object := range stage.Objects {
-		switch object.Direction {
-		case "up":
-			if object.X/16 == (x+15)/16 && ((object.Y+16)/16-1) == y/16 {
-				target = object
+	for _, o := range stage.Objects {
+		switch o.Direction {
+		case object.Up:
+			if o.X/16 == (x+15)/16 && ((o.Y+16)/16-1) == y/16 {
+				target = o
 			}
-		case "down":
-			if object.X/16 == (x+15)/16 && (object.Y+15)/16 == y/16 {
-				target = object
+		case object.Down:
+			if o.X/16 == (x+15)/16 && (o.Y+15)/16 == y/16 {
+				target = o
 			}
-		case "right":
-			if (object.X+15)/16 == x/16 && object.Y/16 == (y+15)/16 {
-				target = object
+		case object.Right:
+			if (o.X+15)/16 == x/16 && o.Y/16 == (y+15)/16 {
+				target = o
 			}
-		case "left":
-			if ((object.X+16)/16-1) == x/16 && object.Y/16 == (y+15)/16 {
-				target = object
+		case object.Left:
+			if ((o.X+16)/16-1) == x/16 && o.Y/16 == (y+15)/16 {
+				target = o
 			}
 		}
 

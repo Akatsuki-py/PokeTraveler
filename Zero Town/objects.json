@@ -8,7 +8,7 @@
                 [8, 9],
                 [9, 8]
             ],
-            "direction": "down",
+            "direction": 1,
             "type": "npc",
             "text": ["Hello PokeMaker!", "Please enjoy this hack!"]
         },
@@ -19,7 +19,7 @@
                 [21, 11],
                 [22, 11]
             ],
-            "direction": "down",
+            "direction": 1,
             "type": "npc",
             "text": ["Welcome to Zero Town.\nHere is an initial town.", "This hack is made by\ncoolguy called Akatsuki."]
         }
