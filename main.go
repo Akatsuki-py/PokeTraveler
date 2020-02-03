@@ -39,6 +39,9 @@ func initGame(game *Game) {
 func render(screen *ebiten.Image) error {
 	defer func() {
 		game.Count++
+		if game.Count%2 == 0 && win != nil {
+			win.IncrementCharPointer()
+		}
 	}()
 
 	if ebiten.IsDrawingSkipped() {
@@ -107,7 +110,7 @@ func render(screen *ebiten.Image) error {
 			if win.IsEnd() {
 				game.Mode = modeStage
 			} else {
-				win.Page++
+				win.NextPage()
 				win.Render(screen)
 			}
 		}

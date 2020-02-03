@@ -13,21 +13,23 @@ var (
 
 // Window - ウィンドウをつかさどる構造体
 type Window struct {
-	Text []string
-	Page uint
+	Text    []string
+	page    uint
+	charPtr uint
 }
 
 // New - コンストラクタ
 func New(text []string) *Window {
 	return &Window{
-		Text: text,
-		Page: 0,
+		Text:    text,
+		page:    0,
+		charPtr: 0,
 	}
 }
 
 func (win *Window) Render(screen *ebiten.Image) {
 	tw, _ := ebiten.NewImageFromImage(messageWindow, ebiten.FilterDefault)
-	text := win.Text[win.Page]
+	text := win.Text[win.page]
 	win.renderText(tw, text)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(0), float64(96))
@@ -35,12 +37,24 @@ func (win *Window) Render(screen *ebiten.Image) {
 }
 
 func (win *Window) IsEnd() bool {
-	return win.Text[win.Page+1] == eventEND
+	return win.Text[win.page+1] == eventEND
+}
+
+func (win *Window) NextPage() {
+	if win.ThisPageEnd() {
+		win.page++
+		win.charPtr = 0
+	}
 }
 
 func (win *Window) renderText(image *ebiten.Image, str string) {
 	var col, row uint
 	for i, r := range str {
+
+		if win.charPtr < uint(i)+1 {
+			break
+		}
+
 		c := string(r)
 		switch c {
 		case "'":
@@ -61,4 +75,19 @@ func (win *Window) renderText(image *ebiten.Image, str string) {
 			col++
 		}
 	}
+}
+
+func (win *Window) IncrementCharPointer() {
+	length := uint(len(win.Text[win.page]))
+	if win.charPtr >= length {
+		return
+	}
+	win.charPtr++
+}
+
+func (win *Window) ThisPageEnd() bool {
+	if win.page >= uint(len(win.Text)) {
+		return false
+	}
+	return win.charPtr+1 >= uint(len(win.Text[win.page]))
 }
