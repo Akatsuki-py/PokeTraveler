@@ -4,6 +4,7 @@ import (
 	"demo/char"
 	"demo/ethan"
 	"demo/object"
+	"demo/sound"
 	"demo/stage"
 	"demo/window"
 	"fmt"
@@ -34,6 +35,8 @@ func initGame(game *Game) {
 	game.Mode = modeStage
 
 	char.Init()
+	sound.InitBGM("1.mp3")
+	sound.InitSE()
 }
 
 func render(screen *ebiten.Image) error {

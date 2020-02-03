@@ -21,7 +21,7 @@
             ],
             "direction": 1,
             "type": "npc",
-            "text": ["Welcome to\nZero Town.", "Here is\nan initial town.", "This hack\nis made", "by coolguy\ncalled Akatsuki.", ":end"]
+            "text": ["Welcome to\nZero Town.", "Here is\nan initial town.", "This hack is\nmade by coolguy", "called Akatsuki.", ":end"]
         }
     ]
 }

@@ -2,6 +2,7 @@ package window
 
 import (
 	"demo/char"
+	"demo/sound"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -44,6 +45,7 @@ func (win *Window) NextPage() {
 	if win.ThisPageEnd() {
 		win.page++
 		win.charPtr = 0
+		sound.Select()
 	}
 }
 
