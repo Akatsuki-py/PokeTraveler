@@ -63,24 +63,31 @@ func render(screen *ebiten.Image) error {
 	switch game.Mode {
 	case modeStage:
 		if game.Ethan.Moving() {
-			game.Ethan.GoAhead()
+			property := game.Stage.GetProperty(game.Ethan.X, game.Ethan.Y)
+			object := game.Stage.GetObject(game.Ethan.X, game.Ethan.Y)
+			if property.Block == 0 && object == nil {
+				game.Ethan.GoAhead()
+			} else {
+				game.Ethan.Collision()
+			}
 
 			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil {
 				doWarp(warp)
 			}
 		} else {
+			game.Ethan.Move()
 			goAhead := false
 			switch {
-			case ebiten.IsKeyPressed(ebiten.KeyUp):
+			case ebiten.IsKeyPressed(ebiten.KeyUp) && isActionOK():
 				game.Ethan.SetDirection(object.Up)
 				goAhead = true
-			case ebiten.IsKeyPressed(ebiten.KeyDown):
+			case ebiten.IsKeyPressed(ebiten.KeyDown) && isActionOK():
 				game.Ethan.SetDirection(object.Down)
 				goAhead = true
-			case ebiten.IsKeyPressed(ebiten.KeyRight):
+			case ebiten.IsKeyPressed(ebiten.KeyRight) && isActionOK():
 				game.Ethan.SetDirection(object.Right)
 				goAhead = true
-			case ebiten.IsKeyPressed(ebiten.KeyLeft):
+			case ebiten.IsKeyPressed(ebiten.KeyLeft) && isActionOK():
 				game.Ethan.SetDirection(object.Left)
 				goAhead = true
 			case btnA() && isActionOK():
@@ -104,6 +111,8 @@ func render(screen *ebiten.Image) error {
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if property.Block == 0 && object == nil {
 					game.Ethan.GoAhead()
+				} else if object == nil {
+					game.Ethan.Collision()
 				}
 			}
 		}

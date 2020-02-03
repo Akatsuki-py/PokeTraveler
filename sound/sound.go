@@ -16,6 +16,7 @@ var (
 
 func InitSE() {
 	setSE("sound/asset/se/Select.wav", selectSE)
+	setSE("sound/asset/se/Collision.wav", collisionSE)
 }
 
 func InitBGM(bgmname string) {

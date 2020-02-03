@@ -14,7 +14,8 @@ type WAV struct {
 }
 
 var (
-	selectSE = &WAV{}
+	selectSE    = &WAV{}
+	collisionSE = &WAV{}
 )
 
 func setSE(path string, se *WAV) {
@@ -51,4 +52,8 @@ func closeSE(se *WAV) {
 
 func Select() {
 	PlaySE(selectSE)
+}
+
+func Collision() {
+	PlaySE(collisionSE)
 }

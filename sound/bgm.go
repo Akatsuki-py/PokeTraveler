@@ -2,6 +2,7 @@ package sound
 
 import (
 	"os"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/audio"
 	"github.com/hajimehoshi/ebiten/audio/mp3"
@@ -26,6 +27,13 @@ func openBGM(path string) {
 func playBGM() {
 	p, _ := audio.NewPlayer(audioContext, bgm.stream)
 	p.Play()
+
+	for range time.Tick(time.Second) {
+		if !p.IsPlaying() {
+			p.Seek(0)
+			p.Play()
+		}
+	}
 }
 
 func closeBGM() {

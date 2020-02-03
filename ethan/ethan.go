@@ -1,6 +1,8 @@
 package ethan
 
 import (
+	"demo/sound"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
@@ -18,6 +20,7 @@ type Ethan struct {
 	X         int
 	Y         int
 	direction int
+	avatar    int
 }
 
 // New - コンストラクタ
@@ -45,40 +48,40 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 	switch ethan.direction {
 	case Up:
 		switch {
-		case ethan.Y%16 == 0:
+		case ethan.avatar%16 == 0:
 			return ethan.Image[1]
-		case ethan.Y%16 > 8 && (ethan.Y/16)%2 == 0:
+		case ethan.avatar%16 > 8 && (ethan.avatar/16)%2 == 0:
 			return ethan.Image[4]
-		case ethan.Y%16 > 8 && (ethan.Y/16)%2 == 1:
+		case ethan.avatar%16 > 8 && (ethan.avatar/16)%2 == 1:
 			return ethan.Image[8]
 		default:
 			return ethan.Image[1]
 		}
 	case Down:
 		switch {
-		case ethan.Y%16 == 0:
+		case ethan.avatar%16 == 0:
 			return ethan.Image[0]
-		case ethan.Y%16 < 8 && (ethan.Y/16)%2 == 0:
+		case ethan.avatar%16 < 8 && (ethan.avatar/16)%2 == 0:
 			return ethan.Image[3]
-		case ethan.Y%16 < 8 && (ethan.Y/16)%2 == 1:
+		case ethan.avatar%16 < 8 && (ethan.avatar/16)%2 == 1:
 			return ethan.Image[7]
 		default:
 			return ethan.Image[0]
 		}
 	case Right:
 		switch {
-		case ethan.X%16 == 0:
+		case ethan.avatar%16 == 0:
 			return ethan.Image[6]
-		case ethan.X%16 < 8:
+		case ethan.avatar%16 < 8:
 			return ethan.Image[9]
 		default:
 			return ethan.Image[6]
 		}
 	case Left:
 		switch {
-		case ethan.X%16 == 0:
+		case ethan.avatar%16 == 0:
 			return ethan.Image[2]
-		case ethan.X%16 < 8:
+		case ethan.avatar%16 < 8:
 			return ethan.Image[5]
 		default:
 			return ethan.Image[2]
@@ -122,6 +125,7 @@ func (ethan *Ethan) Ahead() (x, y int) {
 
 // GoAhead - 主人公を前に進ませる
 func (ethan *Ethan) GoAhead() {
+	ethan.avatar++
 	switch ethan.direction {
 	case Up:
 		ethan.GoUp()
@@ -131,6 +135,14 @@ func (ethan *Ethan) GoAhead() {
 		ethan.GoRight()
 	case Left:
 		ethan.GoLeft()
+	}
+}
+
+// Collision - 主人公が前にぶつかる
+func (ethan *Ethan) Collision() {
+	if ethan.avatar%16 == 0 {
+		ethan.avatar++
+		sound.Collision()
 	}
 }
 
@@ -161,6 +173,13 @@ func (ethan *Ethan) GoLeft() {
 // Moving - 主人公が現在マス目間を移動中か
 func (ethan *Ethan) Moving() bool {
 	return ethan.X%16 != 0 || ethan.Y%16 != 0
+}
+
+// Move - 主人公に歩いている動きをさせる
+func (ethan *Ethan) Move() {
+	if ethan.avatar%16 != 0 {
+		ethan.avatar++
+	}
 }
 
 // Exist - 指定した場所に主人公がいるかを移動も加味して返す
