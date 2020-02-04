@@ -30,6 +30,10 @@ type Stage struct {
 	Warps      []*Warp
 }
 
+const (
+	assetPath = "asset/map"
+)
+
 // Property - タイルのプロパティ
 type Property struct {
 	Block  int // 通行可能か
@@ -38,7 +42,7 @@ type Property struct {
 
 // Load - マップを読み込む関数
 func (stage *Stage) Load(stagename string) {
-	filename := fmt.Sprintf("%s/stage.json", stagename)
+	filename := fmt.Sprintf("asset/map/%s/stage.json", stagename)
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
@@ -53,7 +57,7 @@ func (stage *Stage) Load(stagename string) {
 	stage.Width = raw.Width
 	stage.Height = raw.Height
 
-	stage.Image, _, err = ebitenutil.NewImageFromFile(fmt.Sprintf("%s/stage.png", stagename), ebiten.FilterDefault)
+	stage.Image, _, err = ebitenutil.NewImageFromFile(fmt.Sprintf("%s/%s/stage.png", assetPath, stagename), ebiten.FilterDefault)
 	if err != nil {
 		panic(err)
 	}
@@ -65,13 +69,13 @@ func (stage *Stage) Load(stagename string) {
 	for _, tileset := range raw.Tilesets {
 		firstGID := tileset.FirstGID
 		source := tileset.Source
-		filename := fmt.Sprintf("%s/%s", stagename, source)
+		filename := "asset" + source[2:]
 		stage.loadProperties(firstGID, filename)
 	}
 
-	stage.loadActions(fmt.Sprintf("%s/actions.json", stagename))
-	stage.loadObjects(fmt.Sprintf("%s/objects.json", stagename))
-	stage.loadWarps(fmt.Sprintf("%s/warp.json", stagename))
+	stage.loadActions(fmt.Sprintf("%s/%s/actions.json", assetPath, stagename))
+	stage.loadObjects(fmt.Sprintf("%s/%s/objects.json", assetPath, stagename))
+	stage.loadWarps(fmt.Sprintf("%s/%s/warp.json", assetPath, stagename))
 }
 
 // GetProperty - Get tile property

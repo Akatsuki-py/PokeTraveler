@@ -30,7 +30,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"day08.json"
+         "source":"../tileset/day/day08.json"
         }],
  "tilewidth":16,
  "type":"map",
