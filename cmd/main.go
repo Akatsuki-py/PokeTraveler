@@ -63,7 +63,7 @@ func render(screen *ebiten.Image) error {
 	switch game.Mode {
 	case modeStage:
 		if game.Ethan.Moving() {
-			property := game.Stage.GetProperty(game.Ethan.X, game.Ethan.Y)
+			property := game.Stage.GetProp(game.Ethan.X, game.Ethan.Y)
 			object := game.Stage.GetObject(game.Ethan.X, game.Ethan.Y)
 			if property.Block == 0 && object == nil {
 				game.Ethan.GoAhead()
@@ -91,7 +91,7 @@ func render(screen *ebiten.Image) error {
 				game.Ethan.SetDirection(object.Left)
 				goAhead = true
 			case btnA() && isActionOK():
-				propety := game.Stage.GetProperty(game.Ethan.Ahead())
+				propety := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if propety.Action == 1 {
 					action := game.Stage.GetAction(game.Ethan.Ahead())
@@ -107,7 +107,7 @@ func render(screen *ebiten.Image) error {
 			}
 
 			if goAhead {
-				property := game.Stage.GetProperty(game.Ethan.Ahead())
+				property := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if property.Block == 0 && object == nil {
 					game.Ethan.GoAhead()
@@ -155,7 +155,7 @@ func moveObject() {
 		if game.Count%120 == 0 {
 			direction := object.RandamDirection()
 			aheadX, aheadY := obj.Ahead(direction)
-			property := game.Stage.GetProperty(aheadX, aheadY)
+			property := game.Stage.GetProp(aheadX, aheadY)
 			object := game.Stage.GetObject(aheadX, aheadY)
 			enable := obj.AheadOK(direction)
 			if property.Block == 0 && object == nil && enable {
@@ -175,13 +175,13 @@ func renderEthan(screen *ebiten.Image) {
 }
 
 func doWarp(warp *stage.Warp) {
-	game.Stage.Load(warp.Dst)
+	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
 }
 
 func main() {
 	initGame(&game)
-	game.Stage.Load("Zero Town")
+	game.Stage.Load("Zero Town", 1)
 
 	if err := ebiten.Run(render, 160, 144, 2, "demo"); err != nil {
 		panic(err)

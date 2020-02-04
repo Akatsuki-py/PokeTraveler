@@ -7,8 +7,9 @@ type Warps struct {
 
 // Warp ワープポイント
 type Warp struct {
-	X   int    `json:"x"`
-	Y   int    `json:"y"`
-	Dst string `json:"dst"`
-	Pos [2]int `json:"pos"`
+	X     int    `json:"x"`
+	Y     int    `json:"y"`
+	Dst   string `json:"dst"`
+	DstID int    `json:"dstid"`
+	Pos   [2]int `json:"pos"`
 }

@@ -41,8 +41,8 @@ type Property struct {
 }
 
 // Load - マップを読み込む関数
-func (stage *Stage) Load(stagename string) {
-	filename := fmt.Sprintf("asset/map/%s/stage.json", stagename)
+func (stage *Stage) Load(stagename string, index int) {
+	filename := fmt.Sprintf("asset/map/%s/map%d/stage.json", stagename, index)
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
@@ -57,7 +57,7 @@ func (stage *Stage) Load(stagename string) {
 	stage.Width = raw.Width
 	stage.Height = raw.Height
 
-	stage.Image, _, err = ebitenutil.NewImageFromFile(fmt.Sprintf("%s/%s/stage.png", assetPath, stagename), ebiten.FilterDefault)
+	stage.Image, _, err = ebitenutil.NewImageFromFile(fmt.Sprintf("%s/%s/map%d/stage.png", assetPath, stagename, index), ebiten.FilterDefault)
 	if err != nil {
 		panic(err)
 	}
@@ -69,17 +69,17 @@ func (stage *Stage) Load(stagename string) {
 	for _, tileset := range raw.Tilesets {
 		firstGID := tileset.FirstGID
 		source := tileset.Source
-		filename := "asset" + source[2:]
-		stage.loadProperties(firstGID, filename)
+		filename := "asset" + source[8:]
+		stage.loadProps(firstGID, filename)
 	}
 
-	stage.loadActions(fmt.Sprintf("%s/%s/actions.json", assetPath, stagename))
-	stage.loadObjects(fmt.Sprintf("%s/%s/objects.json", assetPath, stagename))
-	stage.loadWarps(fmt.Sprintf("%s/%s/warp.json", assetPath, stagename))
+	stage.loadActions(fmt.Sprintf("%s/%s/map%d/actions.json", assetPath, stagename, index))
+	stage.loadObjects(fmt.Sprintf("%s/%s/map%d/objects.json", assetPath, stagename, index))
+	stage.loadWarps(fmt.Sprintf("%s/%s/map%d/warp.json", assetPath, stagename, index))
 }
 
-// GetProperty - Get tile property
-func (stage *Stage) GetProperty(x, y int) (target *Property) {
+// GetProp - Get tile property
+func (stage *Stage) GetProp(x, y int) (target *Property) {
 	target = &Property{Block: 1}
 
 	if x >= 0 && x/16 < stage.Width && y >= 0 && y/16 < stage.Height {
@@ -152,7 +152,7 @@ func (stage *Stage) GetWarp(x, y int) (target *Warp) {
 	return target
 }
 
-func (stage *Stage) loadProperties(firstGID int, filename string) {
+func (stage *Stage) loadProps(firstGID int, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
