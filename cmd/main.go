@@ -175,6 +175,7 @@ func renderEthan(screen *ebiten.Image) {
 }
 
 func doWarp(warp *stage.Warp) {
+	sound.GoOutside()
 	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
 }

@@ -18,6 +18,8 @@ var (
 func InitSE() {
 	setSE(assetPath+"/se/Select.wav", selectSE)
 	setSE(assetPath+"/se/Collision.wav", collisionSE)
+	setSE(assetPath+"/se/GoInside.wav", GoInsideSE)
+	setSE(assetPath+"/se/GoOutside.wav", GoOutsideSE)
 }
 
 func InitBGM(bgmname string) {
