@@ -1,15 +1,15 @@
 package window
 
 import (
-	"demo/char"
-	"demo/sound"
+	"demo/pkg/char"
+	"demo/pkg/sound"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 var (
-	messageWindow, _, _ = ebitenutil.NewImageFromFile("window/message.png", ebiten.FilterDefault)
+	messageWindow, _, _ = ebitenutil.NewImageFromFile("asset/window/message.png", ebiten.FilterDefault)
 )
 
 // Window - ウィンドウをつかさどる構造体

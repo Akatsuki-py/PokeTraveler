@@ -1,7 +1,7 @@
 package ethan
 
 import (
-	"demo/sound"
+	"demo/pkg/sound"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -26,16 +26,16 @@ type Ethan struct {
 // New - コンストラクタ
 func New(x, y int) (ethan *Ethan) {
 	ethan = &Ethan{}
-	ethan.Image[0], _, _ = ebitenutil.NewImageFromFile("ethan/0.png", ebiten.FilterDefault)
-	ethan.Image[1], _, _ = ebitenutil.NewImageFromFile("ethan/1.png", ebiten.FilterDefault)
-	ethan.Image[2], _, _ = ebitenutil.NewImageFromFile("ethan/2.png", ebiten.FilterDefault)
-	ethan.Image[3], _, _ = ebitenutil.NewImageFromFile("ethan/3.png", ebiten.FilterDefault)
-	ethan.Image[4], _, _ = ebitenutil.NewImageFromFile("ethan/4.png", ebiten.FilterDefault)
-	ethan.Image[5], _, _ = ebitenutil.NewImageFromFile("ethan/5.png", ebiten.FilterDefault)
-	ethan.Image[6], _, _ = ebitenutil.NewImageFromFile("ethan/6.png", ebiten.FilterDefault)
-	ethan.Image[7], _, _ = ebitenutil.NewImageFromFile("ethan/7.png", ebiten.FilterDefault)
-	ethan.Image[8], _, _ = ebitenutil.NewImageFromFile("ethan/8.png", ebiten.FilterDefault)
-	ethan.Image[9], _, _ = ebitenutil.NewImageFromFile("ethan/9.png", ebiten.FilterDefault)
+	ethan.Image[0], _, _ = ebitenutil.NewImageFromFile("asset/ethan/0.png", ebiten.FilterDefault)
+	ethan.Image[1], _, _ = ebitenutil.NewImageFromFile("asset/ethan/1.png", ebiten.FilterDefault)
+	ethan.Image[2], _, _ = ebitenutil.NewImageFromFile("asset/ethan/2.png", ebiten.FilterDefault)
+	ethan.Image[3], _, _ = ebitenutil.NewImageFromFile("asset/ethan/3.png", ebiten.FilterDefault)
+	ethan.Image[4], _, _ = ebitenutil.NewImageFromFile("asset/ethan/4.png", ebiten.FilterDefault)
+	ethan.Image[5], _, _ = ebitenutil.NewImageFromFile("asset/ethan/5.png", ebiten.FilterDefault)
+	ethan.Image[6], _, _ = ebitenutil.NewImageFromFile("asset/ethan/6.png", ebiten.FilterDefault)
+	ethan.Image[7], _, _ = ebitenutil.NewImageFromFile("asset/ethan/7.png", ebiten.FilterDefault)
+	ethan.Image[8], _, _ = ebitenutil.NewImageFromFile("asset/ethan/8.png", ebiten.FilterDefault)
+	ethan.Image[9], _, _ = ebitenutil.NewImageFromFile("asset/ethan/9.png", ebiten.FilterDefault)
 
 	ethan.X = x
 	ethan.Y = y

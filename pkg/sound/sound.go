@@ -8,6 +8,7 @@ import (
 
 const (
 	sampleRate = 44100
+	assetPath  = "asset/sound"
 )
 
 var (
@@ -15,12 +16,12 @@ var (
 )
 
 func InitSE() {
-	setSE("sound/asset/se/Select.wav", selectSE)
-	setSE("sound/asset/se/Collision.wav", collisionSE)
+	setSE(assetPath+"/se/Select.wav", selectSE)
+	setSE(assetPath+"/se/Collision.wav", collisionSE)
 }
 
 func InitBGM(bgmname string) {
-	openBGM(fmt.Sprintf("sound/asset/bgm/%s", bgmname))
+	openBGM(fmt.Sprintf(assetPath+"/bgm/%s", bgmname))
 
 	go playBGM()
 }

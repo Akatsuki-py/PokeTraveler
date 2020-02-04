@@ -281,7 +281,7 @@ func (object *Object) loadImage(objectID int) {
 		dir = "user"
 	}
 
-	path := fmt.Sprintf("object/%s/%d", dir, objectID)
+	path := fmt.Sprintf("asset/object/%s/%d", dir, objectID)
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		panic(err)

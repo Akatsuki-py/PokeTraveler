@@ -3,14 +3,14 @@ package char
 import (
 	"fmt"
 
-	"demo/util"
+	"demo/pkg/util"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 const (
-	assetPath = "char/asset"
+	assetPath = "asset/char"
 )
 
 var charset map[string]*ebiten.Image = map[string]*ebiten.Image{}

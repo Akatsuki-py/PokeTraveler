@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"demo/object"
+	"demo/pkg/object"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"

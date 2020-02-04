@@ -1,12 +1,12 @@
 package main
 
 import (
-	"demo/char"
-	"demo/ethan"
-	"demo/object"
-	"demo/sound"
-	"demo/stage"
-	"demo/window"
+	"demo/pkg/char"
+	"demo/pkg/ethan"
+	"demo/pkg/object"
+	"demo/pkg/sound"
+	"demo/pkg/stage"
+	"demo/pkg/window"
 	"fmt"
 
 	"github.com/hajimehoshi/ebiten"
