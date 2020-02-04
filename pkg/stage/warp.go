@@ -12,4 +12,5 @@ type Warp struct {
 	Dst   string `json:"dst"`
 	DstID int    `json:"dstid"`
 	Pos   [2]int `json:"pos"`
+	InOut string `json:"inout"`
 }

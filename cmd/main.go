@@ -8,6 +8,7 @@ import (
 	"demo/pkg/stage"
 	"demo/pkg/window"
 	"fmt"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -15,14 +16,16 @@ import (
 const (
 	modeStage = iota
 	modeWindow
+	modeWarp
 )
 
 // Game ゲーム情報を管理する
 type Game struct {
-	Count int
-	Stage stage.Stage
-	Ethan ethan.Ethan
-	Mode  int
+	Count    int
+	Stage    stage.Stage
+	Ethan    ethan.Ethan
+	Mode     int
+	coolTime uint
 }
 
 var game Game
@@ -44,6 +47,9 @@ func render(screen *ebiten.Image) error {
 		game.Count++
 		if game.Count%2 == 0 && win != nil {
 			win.IncrementCharPointer()
+		}
+		if game.coolTime > 0 {
+			game.coolTime--
 		}
 	}()
 
@@ -71,7 +77,7 @@ func render(screen *ebiten.Image) error {
 				game.Ethan.Collision()
 			}
 
-			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil {
+			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil && warp.InOut == "in" {
 				doWarp(warp)
 			}
 		} else {
@@ -109,13 +115,16 @@ func render(screen *ebiten.Image) error {
 			if goAhead {
 				property := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
-				if property.Block == 0 && object == nil {
+				if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
+					doWarp(warp)
+				} else if property.Block == 0 && object == nil {
 					game.Ethan.GoAhead()
 				} else if object == nil {
 					game.Ethan.Collision()
 				}
 			}
 		}
+		renderEthan(screen)
 	case modeWindow:
 		win.Render(screen)
 		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
@@ -126,9 +135,14 @@ func render(screen *ebiten.Image) error {
 				win.Render(screen)
 			}
 		}
+		renderEthan(screen)
+	case modeWarp:
+		screen.Fill(color.NRGBA{0xee, 0xee, 0xee, 0xff})
+		if game.coolTime == 0 {
+			game.Mode = modeStage
+		}
 	}
 
-	renderEthan(screen)
 	return nil
 }
 
@@ -175,7 +189,13 @@ func renderEthan(screen *ebiten.Image) {
 }
 
 func doWarp(warp *stage.Warp) {
-	sound.GoOutside()
+	if warp.InOut == "in" {
+		sound.GoInside()
+	} else {
+		sound.GoOutside()
+	}
+	game.Mode = modeWarp
+	game.coolTime = 24
 	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
 }
