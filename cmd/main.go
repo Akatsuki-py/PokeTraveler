@@ -137,7 +137,7 @@ func render(screen *ebiten.Image) error {
 		}
 		renderEthan(screen)
 	case modeWarp:
-		screen.Fill(color.NRGBA{0xee, 0xee, 0xee, 0xff})
+		screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
 		if game.coolTime == 0 {
 			game.Mode = modeStage
 		}
@@ -155,7 +155,7 @@ func renderStage(screen *ebiten.Image) {
 func renderObject(screen *ebiten.Image) {
 	for _, obj := range game.Stage.Objects {
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(64-game.Ethan.X+obj.X), float64(64-game.Ethan.Y+obj.Y))
+		op.GeoM.Translate(float64(64-game.Ethan.X+obj.X), float64(64-game.Ethan.Y+obj.Y-4))
 		screen.DrawImage(obj.Avatar(), op)
 	}
 }
@@ -184,7 +184,7 @@ func moveObject() {
 
 func renderEthan(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(64), float64(64))
+	op.GeoM.Translate(float64(64), float64(64-4))
 	screen.DrawImage(game.Ethan.Avatar(), op)
 }
 
@@ -195,7 +195,7 @@ func doWarp(warp *stage.Warp) {
 		sound.GoOutside()
 	}
 	game.Mode = modeWarp
-	game.coolTime = 24
+	game.coolTime = 20
 	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
 }
