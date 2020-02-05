@@ -77,7 +77,7 @@ func render(screen *ebiten.Image) error {
 				game.Ethan.Collision()
 			}
 
-			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil && warp.InOut == "in" {
+			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil && (warp.InOut == "in" || warp.InOut == "none") {
 				doWarp(warp)
 			}
 		} else {
@@ -191,11 +191,13 @@ func renderEthan(screen *ebiten.Image) {
 func doWarp(warp *stage.Warp) {
 	if warp.InOut == "in" {
 		sound.GoInside()
-	} else {
+		game.Mode = modeWarp
+		game.coolTime = 20
+	} else if warp.InOut == "out" {
 		sound.GoOutside()
+		game.Mode = modeWarp
+		game.coolTime = 20
 	}
-	game.Mode = modeWarp
-	game.coolTime = 20
 	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
 }

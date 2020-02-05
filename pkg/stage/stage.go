@@ -64,6 +64,16 @@ func (stage *Stage) Load(stagename string, index int) {
 
 	stage.TileIndex = make([]int, stage.Height*stage.Width)
 	copy(stage.TileIndex, raw.Layers[0].Data)
+	for i, layer := range raw.Layers {
+		if i == 0 {
+			continue
+		}
+		for i, tile := range layer.Data {
+			if tile != 0 {
+				stage.TileIndex[i] = tile
+			}
+		}
+	}
 
 	// 各タイルセットについて
 	for _, tileset := range raw.Tilesets {
