@@ -16,6 +16,7 @@ type MP3 struct {
 var (
 	bgm    MP3
 	isPlay bool
+	done   = make(chan interface{})
 )
 
 func openBGM(path string) {
@@ -28,17 +29,24 @@ func playBGM() {
 	p, _ := audio.NewPlayer(audioContext, bgm.stream)
 	p.Play()
 
-	for range time.Tick(time.Second) {
-		if !p.IsPlaying() {
-			p.Seek(0)
-			p.Play()
+loop:
+	for range time.Tick(time.Millisecond * 100) {
+		select {
+		case <-done:
+			p.Close()
+			done = make(chan interface{})
+			break loop
+		default:
+			if !p.IsPlaying() {
+				p.Rewind()
+				p.Play()
+			}
 		}
 	}
 }
 
 func closeBGM() {
 	if isPlay {
-		bgm.file.Close()
-		bgm.stream.Close()
+		close(done)
 	}
 }

@@ -23,8 +23,8 @@ func InitSE() {
 }
 
 func InitBGM(bgmname string) {
+	closeBGM()
 	openBGM(fmt.Sprintf(assetPath+"/bgm/%s", bgmname))
-
 	go playBGM()
 }
 

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 
 	"demo/pkg/object"
+	"demo/pkg/sound"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -28,6 +29,7 @@ type Stage struct {
 	Actions    []*Action
 	Objects    []*object.Object
 	Warps      []*Warp
+	BGM        *BGM
 }
 
 const (
@@ -86,6 +88,7 @@ func (stage *Stage) Load(stagename string, index int) {
 	stage.loadActions(fmt.Sprintf("%s/%s/map%d/actions.json", assetPath, stagename, index))
 	stage.loadObjects(fmt.Sprintf("%s/%s/map%d/objects.json", assetPath, stagename, index))
 	stage.loadWarps(fmt.Sprintf("%s/%s/map%d/warp.json", assetPath, stagename, index))
+	stage.loadBGM(fmt.Sprintf("%s/%s/map%d/bgm.json", assetPath, stagename, index))
 }
 
 // GetProp - Get tile property
@@ -218,4 +221,20 @@ func (stage *Stage) loadWarps(filename string) {
 		panic(err)
 	}
 	stage.Warps = warps.List
+}
+
+func (stage *Stage) loadBGM(filename string) {
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	bgm := new(BGM)
+	if err := json.Unmarshal(file, bgm); err != nil {
+		panic(err)
+	}
+	if stage.BGM == nil || stage.BGM.Name != bgm.Name {
+		stage.BGM = bgm
+		go sound.InitBGM(bgm.Name)
+	}
 }

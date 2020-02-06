@@ -38,7 +38,6 @@ func initGame(game *Game) {
 	game.Mode = modeStage
 
 	char.Init()
-	sound.InitBGM("1.mp3")
 	sound.InitSE()
 }
 
