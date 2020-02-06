@@ -2,7 +2,7 @@
     "warps": [
         {
             "x": 6,
-            "y": 18,
+            "y": 23,
             "dst": "Zero Town",
             "dstid": 2,
             "pos": [
@@ -18,7 +18,7 @@
             "dstid": 1,
             "pos": [
                 19,
-                31
+                34
             ],
             "inout": "none"
         },
@@ -29,7 +29,7 @@
             "dstid": 1,
             "pos": [
                 20,
-                31
+                34
             ],
             "inout": "none"
         }
