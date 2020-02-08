@@ -211,3 +211,8 @@ func (ethan *Ethan) Exist(x, y int) bool {
 	exist = existX && existY
 	return exist
 }
+
+// IsOriented - 指定した方向を向いているか
+func (ethan *Ethan) IsOriented(direction int) bool {
+	return direction == ethan.direction
+}

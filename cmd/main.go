@@ -84,17 +84,37 @@ func render(screen *ebiten.Image) error {
 			goAhead := false
 			switch {
 			case ebiten.IsKeyPressed(ebiten.KeyUp) && isActionOK():
-				game.Ethan.SetDirection(object.Up)
-				goAhead = true
+				if game.Ethan.IsOriented(object.Up) {
+					goAhead = true
+					game.coolTime = 17
+				} else {
+					game.Ethan.SetDirection(object.Up)
+					game.coolTime = 5
+				}
 			case ebiten.IsKeyPressed(ebiten.KeyDown) && isActionOK():
-				game.Ethan.SetDirection(object.Down)
-				goAhead = true
+				if game.Ethan.IsOriented(object.Down) {
+					goAhead = true
+					game.coolTime = 17
+				} else {
+					game.Ethan.SetDirection(object.Down)
+					game.coolTime = 5
+				}
 			case ebiten.IsKeyPressed(ebiten.KeyRight) && isActionOK():
-				game.Ethan.SetDirection(object.Right)
-				goAhead = true
+				if game.Ethan.IsOriented(object.Right) {
+					goAhead = true
+					game.coolTime = 17
+				} else {
+					game.Ethan.SetDirection(object.Right)
+					game.coolTime = 5
+				}
 			case ebiten.IsKeyPressed(ebiten.KeyLeft) && isActionOK():
-				game.Ethan.SetDirection(object.Left)
-				goAhead = true
+				if game.Ethan.IsOriented(object.Left) {
+					goAhead = true
+					game.coolTime = 17
+				} else {
+					game.Ethan.SetDirection(object.Left)
+					game.coolTime = 5
+				}
 			case btnA() && isActionOK():
 				propety := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
@@ -109,6 +129,7 @@ func render(screen *ebiten.Image) error {
 					win = window.New(object.Text)
 					win.Render(screen)
 				}
+				game.coolTime = 17
 			}
 
 			if goAhead {
@@ -133,6 +154,7 @@ func render(screen *ebiten.Image) error {
 				win.NextPage()
 				win.Render(screen)
 			}
+			game.coolTime = 17
 		}
 		renderEthan(screen)
 	case modeWarp:
@@ -215,12 +237,5 @@ func btnA() bool {
 }
 
 func isActionOK() bool {
-	delta := game.Count - lastAction
-	coolTime := 17 // 17フレーム
-	if delta > coolTime {
-		lastAction = game.Count
-		return true
-	}
-
-	return false
+	return game.coolTime == 0
 }
