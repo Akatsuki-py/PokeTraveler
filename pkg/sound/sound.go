@@ -22,10 +22,10 @@ func InitSE() {
 	setSE(assetPath+"/se/GoOutside.wav", GoOutsideSE)
 }
 
-func InitBGM(bgmname string) {
+func InitBGM(bgmname string, fade bool) {
 	closeBGM()
 	openBGM(fmt.Sprintf(assetPath+"/bgm/%s", bgmname))
-	go playBGM()
+	go playBGM(fade)
 }
 
 func Exit() {

@@ -25,18 +25,43 @@ func openBGM(path string) {
 	isPlay = true
 }
 
-func playBGM() {
+func playBGM(fade bool) {
 	p, _ := audio.NewPlayer(audioContext, bgm.stream)
-	p.Play()
+
+	fadeinCount := 0
+	if fade {
+		fadeinCount = 25
+	} else {
+		p.Play()
+	}
+	fadeoutCount := 0
 
 loop:
 	for range time.Tick(time.Millisecond * 100) {
 		select {
 		case <-done:
-			p.Close()
 			done = make(chan interface{})
-			break loop
+			if fade {
+				fadeoutCount = 20
+			} else {
+				p.Close()
+				break loop
+			}
 		default:
+			if fadeoutCount > 0 {
+				p.SetVolume(float64(fadeoutCount) * 0.05)
+				fadeoutCount--
+				if fadeoutCount == 0 {
+					p.Close()
+					break loop
+				}
+			}
+			if fadeinCount > 0 {
+				fadeinCount--
+				if fadeinCount == 0 {
+					p.Play()
+				}
+			}
 			if !p.IsPlaying() {
 				p.Rewind()
 				p.Play()

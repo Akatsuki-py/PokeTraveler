@@ -235,6 +235,6 @@ func (stage *Stage) loadBGM(filename string) {
 	}
 	if stage.BGM == nil || stage.BGM.Name != bgm.Name {
 		stage.BGM = bgm
-		go sound.InitBGM(bgm.Name)
+		go sound.InitBGM(bgm.Name, bgm.Fade)
 	}
 }
