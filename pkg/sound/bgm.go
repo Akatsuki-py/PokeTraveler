@@ -28,7 +28,7 @@ func openBGM(path string) {
 func playBGM(fade bool) {
 	p, _ := audio.NewPlayer(audioContext, bgm.stream)
 
-	// フェードを用いるBGMは25フレームで完全に再生される
+	// フェードを用いるBGMは10フレームで完全に再生される
 	fadeinCount := 0
 	if fade {
 		fadeinCount = 10
@@ -45,6 +45,7 @@ loop:
 		case <-done:
 			done = make(chan interface{})
 			if fade {
+				// フェードアウトには10フレーム要する
 				fadeoutCount = 10
 			} else {
 				p.Close()
