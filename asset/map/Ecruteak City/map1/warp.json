@@ -1,6 +1,28 @@
 {
     "warps": [
         {
+            "x": 7,
+            "y": 19,
+            "dst": "Ecruteak City",
+            "dstid": 3,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
+        },
+        {
+            "x": 15,
+            "y": 25,
+            "dst": "Ecruteak City",
+            "dstid": 2,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
+        },
+        {
             "x": 19,
             "y": 34,
             "dst": "Zero Town",

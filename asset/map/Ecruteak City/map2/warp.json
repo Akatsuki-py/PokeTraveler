@@ -1,0 +1,26 @@
+{
+    "warps": [
+        {
+            "x": 3,
+            "y": 8,
+            "dst": "Ecruteak City",
+            "dstid": 1,
+            "pos": [
+                15,
+                26
+            ],
+            "inout": "out"
+        },
+        {
+            "x": 4,
+            "y": 8,
+            "dst": "Ecruteak City",
+            "dstid": 1,
+            "pos": [
+                15,
+                26
+            ],
+            "inout": "out"
+        }
+    ]
+}

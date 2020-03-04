@@ -11,6 +11,15 @@
             ]
         },
         {
+            "x": 8,
+            "y": 25,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
             "x": 10,
             "y": 26,
             "type": "text",
@@ -32,11 +41,29 @@
             ]
         },
         {
+            "x": 20,
+            "y": 9,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
             "x": 23,
             "y": 19,
             "type": "text",
             "value": [
                 "ECRUTEAK DANCE\nTHEATER",
+                ":end"
+            ]
+        },
+        {
+            "x": 25,
+            "y": 19,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
                 ":end"
             ]
         }

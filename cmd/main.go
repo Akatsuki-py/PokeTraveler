@@ -139,11 +139,19 @@ func render(screen *ebiten.Image) error {
 			if goAhead {
 				property := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
-				if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
+				action := game.Stage.GetAction(game.Ethan.Ahead())
+
+				if property.Action == 1 && action != nil && action.Type == "text" {
+					// 移動先にテキストブロックがある
+					game.Ethan.Collision()
+				} else if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
+					// 移動先にワープブロックがある
 					doWarp(warp)
 				} else if property.Block == 0 && object == nil {
+					// 移動先に何もない
 					game.Ethan.GoAhead()
 				} else if object == nil {
+					// 移動先にblock属性を持ったタイルがある object==nilで正しい
 					game.Ethan.Collision()
 				}
 			}
