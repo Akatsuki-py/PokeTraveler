@@ -1,4 +1,44 @@
 {
     "actions": [
+        {
+            "x": 4,
+            "y": 8,
+            "type": "text",
+            "value": [
+                "BURNED TOWER",
+                "It was destroyed\nby a fire.",
+                ":end"
+            ]
+        },
+        {
+            "x": 10,
+            "y": 26,
+            "type": "text",
+            "value": [
+                "ECRUTEAK CITY",
+                "POKEON GYM\nLEADER: MORTY",
+                "The Mystic Seer\nof the Future",
+                ":end"
+            ]
+        },
+        {
+            "x": 17,
+            "y": 19,
+            "type": "text",
+            "value": [
+                "ECRUTEAK CITY\nA Historical City",
+                "Where the Past\nMeets the Present",
+                ":end"
+            ]
+        },
+        {
+            "x": 23,
+            "y": 19,
+            "type": "text",
+            "value": [
+                "ECRUTEAK DANCE\nTHEATER",
+                ":end"
+            ]
+        }
     ]
 }
