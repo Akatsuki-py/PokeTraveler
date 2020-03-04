@@ -4,7 +4,7 @@
             "x": 6,
             "y": 9,
             "type": "text",
-            "value": "Zero Town"
+            "value": ["Zero Town", "The Town Where the\nWinds of a New", "Beginning Blow", ":end"]
         }
     ]
 }

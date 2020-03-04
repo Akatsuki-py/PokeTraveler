@@ -7,7 +7,6 @@ import (
 	"demo/pkg/sound"
 	"demo/pkg/stage"
 	"demo/pkg/window"
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
@@ -67,6 +66,7 @@ func render(screen *ebiten.Image) error {
 
 	switch game.Mode {
 	case modeStage:
+		// 主人公がマス目の間を移動中
 		if game.Ethan.Moving() {
 			property := game.Stage.GetProp(game.Ethan.X, game.Ethan.Y)
 			object := game.Stage.GetObject(game.Ethan.X, game.Ethan.Y)
@@ -80,6 +80,7 @@ func render(screen *ebiten.Image) error {
 				doWarp(warp)
 			}
 		} else {
+			// 主人公がマス目にいるときはアクションを受け付ける
 			game.Ethan.Move()
 			goAhead := false
 			switch {
@@ -120,8 +121,10 @@ func render(screen *ebiten.Image) error {
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if propety.Action == 1 {
 					action := game.Stage.GetAction(game.Ethan.Ahead())
-					if action != nil {
-						fmt.Println(action.Value)
+					if action != nil && action.Type == "text" {
+						game.Mode = modeWindow
+						win = window.New(action.Value)
+						win.Render(screen)
 					}
 				} else if object != nil {
 					game.Mode = modeWindow
@@ -132,6 +135,7 @@ func render(screen *ebiten.Image) error {
 				game.coolTime = 17
 			}
 
+			// 前に進ませる
 			if goAhead {
 				property := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())

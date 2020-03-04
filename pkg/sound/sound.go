@@ -23,9 +23,12 @@ func InitSE() {
 }
 
 func InitBGM(bgmname string, fade bool) {
-	closeBGM()
 	openBGM(fmt.Sprintf(assetPath+"/bgm/%s", bgmname))
 	go playBGM(fade)
+}
+
+func ExitBGM() {
+	closeBGM()
 }
 
 func Exit() {

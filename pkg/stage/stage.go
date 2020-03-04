@@ -233,8 +233,11 @@ func (stage *Stage) loadBGM(filename string) {
 	if err := json.Unmarshal(file, bgm); err != nil {
 		panic(err)
 	}
+
+	// BGMが変わる時だけを開始する(家などの出入りによってBGMが最初からになるのを避けている)
 	if stage.BGM == nil || stage.BGM.Name != bgm.Name {
 		stage.BGM = bgm
+		sound.ExitBGM()
 		go sound.InitBGM(bgm.Name, bgm.Fade)
 	}
 }
