@@ -1,17 +1,9 @@
-## PokeTraveler
+# PokeTraveler
 
-## 方針
-とりあえず複雑な戦闘、イベントは考えずポケモンGSC風の世界を探索できるゲームを目指すことにする
-特定のマスに行ったら特定のキャラが話しかけてくるぐらいのイベントはやりたい
+A game that just roams the world of Pokemon GSC.
 
-## 今後やること
- - オープニングをつくる
- - イントロダクション(オーキド博士がプレゼンするあれ)を作る(ここでユーザーアバターな名前をユーザーに決めてもらう)
+You don't have Pokemon and can just concentrate on enjoying walking around the Pokemon world!
 
-## ウィンドウ
-毎ウィンドウに毎フレーム、文字を最初から描画するのはオーバーヘッドが高いので、前フレームのウィンドウをとっておきそれに1文字追加する形式でやる
+<img src="https://imgur.com/gUY4VT2.png" />
 
-将来性も考える
- - メッセージ内にイベントの割り込み
- - メッセージの分岐処理
- - メッセージのループ処理
+You can easily create PokeTraveler map as you like.
