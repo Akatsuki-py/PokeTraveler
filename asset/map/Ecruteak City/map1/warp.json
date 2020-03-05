@@ -43,6 +43,28 @@
                 6
             ],
             "inout": "none"
+        },
+        {
+            "x": 25,
+            "y": 25,
+            "dst": "Ecruteak City",
+            "dstid": 4,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
+        },
+        {
+            "x": 31,
+            "y": 19,
+            "dst": "Ecruteak City",
+            "dstid": 5,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
         }
     ]
 }
