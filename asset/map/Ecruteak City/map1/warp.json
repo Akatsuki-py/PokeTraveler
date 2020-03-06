@@ -1,6 +1,28 @@
 {
     "warps": [
         {
+            "x": 19,
+            "y": 32,
+            "dst": "Oxalis City",
+            "dstid": 4,
+            "pos": [
+                4,
+                1
+            ],
+            "inout": "out"
+        },
+        {
+            "x": 20,
+            "y": 32,
+            "dst": "Oxalis City",
+            "dstid": 4,
+            "pos": [
+                5,
+                1
+            ],
+            "inout": "out"
+        },
+        {
             "x": 7,
             "y": 19,
             "dst": "Ecruteak City",
@@ -21,28 +43,6 @@
                 7
             ],
             "inout": "in"
-        },
-        {
-            "x": 19,
-            "y": 34,
-            "dst": "Zero Town",
-            "dstid": 1,
-            "pos": [
-                15,
-                6
-            ],
-            "inout": "none"
-        },
-        {
-            "x": 20,
-            "y": 34,
-            "dst": "Zero Town",
-            "dstid": 1,
-            "pos": [
-                16,
-                6
-            ],
-            "inout": "none"
         },
         {
             "x": 25,

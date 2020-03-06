@@ -21,6 +21,17 @@
                 7
             ],
             "inout": "in"
+        },
+        {
+            "x": 21,
+            "y": 3,
+            "dst": "Oxalis City",
+            "dstid": 4,
+            "pos": [
+                4,
+                7
+            ],
+            "inout": "in"
         }
     ]
 }
