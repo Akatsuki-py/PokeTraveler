@@ -334,7 +334,12 @@
                 {
                  "name":"block",
                  "type":"int",
-                 "value":1
+                 "value":0
+                }, 
+                {
+                 "name":"oneway",
+                 "type":"int",
+                 "value":3
                 }]
         }, 
         {
@@ -374,6 +379,11 @@
          "properties":[
                 {
                  "name":"block",
+                 "type":"int",
+                 "value":0
+                }, 
+                {
+                 "name":"oneway",
                  "type":"int",
                  "value":1
                 }]

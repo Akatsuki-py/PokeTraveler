@@ -40,6 +40,7 @@ const (
 type Property struct {
 	Block  int // 通行可能か
 	Action int // このタイルに対して何らかのアクションが可能か？
+	OneWay int // 通行可能な方向 0全方向可能 1下のみ可能 2右のみ 3左のみ
 }
 
 // Load - マップを読み込む関数
@@ -187,6 +188,8 @@ func (stage *Stage) loadProps(firstGID int, filename string) {
 				newProperty.Block = property.Value
 			case "action":
 				newProperty.Action = property.Value
+			case "oneway":
+				newProperty.OneWay = property.Value
 			}
 		}
 		stage.Properties[tileID] = newProperty

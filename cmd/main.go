@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	modeStage = iota
+	modeStage  = iota
+	modeOneWay // 段差
 	modeWindow
 	modeWarp
 )
@@ -121,12 +122,14 @@ func render(screen *ebiten.Image) error {
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if propety.Action == 1 {
 					action := game.Stage.GetAction(game.Ethan.Ahead())
+					// アクションがあるならそのアクションを取らせる
 					if action != nil && action.Type == "text" {
 						game.Mode = modeWindow
 						win = window.New(action.Value)
 						win.Render(screen)
 					}
 				} else if object != nil {
+					// 人との会話
 					game.Mode = modeWindow
 					object.SetDirectionByPoint(game.Ethan.X, game.Ethan.Y)
 					win = window.New(object.Text)
@@ -135,15 +138,24 @@ func render(screen *ebiten.Image) error {
 				game.coolTime = 17
 			}
 
-			// 前に進ませる
+			// 障害物や段差を考慮して前に進ませる
 			if goAhead {
-				property := game.Stage.GetProp(game.Ethan.Ahead())
-				object := game.Stage.GetObject(game.Ethan.Ahead())
-				action := game.Stage.GetAction(game.Ethan.Ahead())
+				property := game.Stage.GetProp(game.Ethan.Ahead()) // 障害物、段差
+				object := game.Stage.GetObject(game.Ethan.Ahead()) // 人
+				action := game.Stage.GetAction(game.Ethan.Ahead()) // アクションオブジェクト
 
 				if property.Action == 1 && action != nil && action.Type == "text" {
 					// 移動先にテキストブロックがある
 					game.Ethan.Collision()
+				} else if oneway := property.OneWay; oneway > 0 {
+					// 移動先に段差がある
+					if game.Ethan.IsOriented(oneway) {
+						game.coolTime = 32
+						sound.Ledge()
+						game.Mode = modeOneWay
+					} else {
+						game.Ethan.Collision()
+					}
 				} else if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
 					// 移動先にワープブロックがある
 					doWarp(warp)
@@ -174,6 +186,13 @@ func render(screen *ebiten.Image) error {
 		if game.coolTime == 0 {
 			game.Mode = modeStage
 		}
+	case modeOneWay:
+		if game.coolTime > 0 {
+			game.Ethan.GoAhead()
+		} else {
+			game.Mode = modeStage
+		}
+		renderEthan(screen)
 	}
 
 	return nil

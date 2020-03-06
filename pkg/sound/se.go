@@ -18,6 +18,7 @@ var (
 	collisionSE = &WAV{}
 	GoInsideSE  = &WAV{}
 	GoOutsideSE = &WAV{}
+	LedgeSE     = &WAV{}
 )
 
 func setSE(path string, se *WAV) {
@@ -66,4 +67,8 @@ func GoInside() {
 
 func GoOutside() {
 	PlaySE(GoOutsideSE)
+}
+
+func Ledge() {
+	PlaySE(LedgeSE)
 }

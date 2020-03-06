@@ -20,6 +20,7 @@ func InitSE() {
 	setSE(assetPath+"/se/Collision.wav", collisionSE)
 	setSE(assetPath+"/se/GoInside.wav", GoInsideSE)
 	setSE(assetPath+"/se/GoOutside.wav", GoOutsideSE)
+	setSE(assetPath+"/se/Ledge.wav", LedgeSE)
 }
 
 func InitBGM(bgmname string, fade bool) {
