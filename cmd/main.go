@@ -33,7 +33,7 @@ var lastAction int
 
 func initGame(game *Game) {
 	game.Count = 0
-	game.Ethan = *ethan.New(4*16, 9*16)
+	game.Ethan = *ethan.New(37*16, 14*16)
 	game.Mode = modeStage
 
 	char.Init()
@@ -237,7 +237,7 @@ func doWarp(warp *stage.Warp) {
 
 func main() {
 	initGame(&game)
-	game.Stage.Load("Zero Town", 1)
+	game.Stage.Load("Oxalis City", 1)
 
 	if err := ebiten.Run(render, 160, 144, 2, "demo"); err != nil {
 		panic(err)
