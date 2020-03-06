@@ -1,4 +1,103 @@
 {
     "actions": [
+        {
+            "x": 12,
+            "y": 9,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
+            "x": 29,
+            "y": 7,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
+            "x": 37,
+            "y": 7,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
+            "x": 22,
+            "y": 17,
+            "type": "text",
+            "value": [
+                "This door is\nlocked...",
+                ":end"
+            ]
+        },
+        {
+            "x": 30,
+            "y": 8,
+            "type": "text",
+            "value": [
+                "Rookie trainer\nhall.",
+                "Just the place\nfor beginners!",
+                ":end"
+            ]
+        },
+        {
+            "x": 19,
+            "y": 9,
+            "type": "text",
+            "value": [
+                "Please enjoy\nthis hack!",
+                ":end"
+            ]
+        },
+        {
+            "x": 15,
+            "y": 11,
+            "type": "text",
+            "value": [
+                "Oxalis boutique",
+                "Get some\nclothes that",
+                "are just right\nfor you!",
+                ":end"
+            ]
+        },
+        {
+            "x": 21,
+            "y": 19,
+            "type": "text",
+            "value": [
+                "Oxalis City",
+                "Pokemon Gym\nLeader: Josiah",
+                "Too hot to\nhandle!",
+                ":end"
+            ]
+        },
+        {
+            "x": 35,
+            "y": 25,
+            "type": "text",
+            "value": [
+                "Oxalis City",
+                "Find out how\nhappy your",
+                "Pokemon\nreally are",
+                ":end"
+            ]
+        },
+        {
+            "x": 23,
+            "y": 27,
+            "type": "text",
+            "value": [
+                "Oxalis City",
+                "The city for\nyoung growing",
+                "trainers",
+                ":end"
+            ]
+        }
     ]
 }
