@@ -1,0 +1,39 @@
+{ "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
+ "height":8,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[28, 29, 5, 10, 28, 29, 8, 9, 8, 9, 8, 9, 38, 39, 14, 20, 38, 39, 18, 19, 18, 19, 18, 19, 46, 46, 15, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 14, 46, 46, 46, 46, 46, 46, 46, 46, 46, 10, 10, 23, 46, 8, 9, 8, 9, 8, 9, 46, 7, 20, 20, 46, 46, 18, 19, 18, 19, 18, 19, 46, 17, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 46, 7, 46, 46, 12, 12, 46, 46, 46, 46, 46, 46, 46, 17],
+         "height":8,
+         "id":1,
+         "name":"\u30bf\u30a4\u30eb\u30fb\u30ec\u30a4\u30e4\u30fc 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.3.3",
+ "tileheight":16,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"..\/..\/..\/tileset\/day\/day11.json"
+        }],
+ "tilewidth":16,
+ "type":"map",
+ "version":1.2,
+ "width":12
+}

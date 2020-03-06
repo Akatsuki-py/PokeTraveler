@@ -1,4 +1,26 @@
 {
     "warps": [
+        {
+            "x": 37,
+            "y": 15,
+            "dst": "Oxalis City",
+            "dstid": 2,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
+        },
+        {
+            "x": 12,
+            "y": 21,
+            "dst": "Oxalis City",
+            "dstid": 3,
+            "pos": [
+                3,
+                7
+            ],
+            "inout": "in"
+        }
     ]
 }
