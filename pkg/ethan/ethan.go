@@ -17,6 +17,7 @@ const (
 // Ethan 主人公のデータ
 type Ethan struct {
 	Image     [10]*ebiten.Image
+	HopImage  *ebiten.Image
 	X         int
 	Y         int
 	direction int
@@ -36,6 +37,8 @@ func New(x, y int) (ethan *Ethan) {
 	ethan.Image[7], _, _ = ebitenutil.NewImageFromFile("asset/ethan/7.png", ebiten.FilterDefault)
 	ethan.Image[8], _, _ = ebitenutil.NewImageFromFile("asset/ethan/8.png", ebiten.FilterDefault)
 	ethan.Image[9], _, _ = ebitenutil.NewImageFromFile("asset/ethan/9.png", ebiten.FilterDefault)
+
+	ethan.HopImage, _, _ = ebitenutil.NewImageFromFile("asset/ethan/hop.png", ebiten.FilterDefault)
 
 	ethan.X = x
 	ethan.Y = y

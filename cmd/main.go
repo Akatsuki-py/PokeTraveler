@@ -236,8 +236,25 @@ func moveObject() {
 
 func renderEthan(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(64), float64(64-4))
-	screen.DrawImage(game.Ethan.Avatar(), op)
+	switch game.Mode {
+	case modeStage:
+		op.GeoM.Translate(float64(64), float64(64-4))
+		screen.DrawImage(game.Ethan.Avatar(), op)
+	case modeOneWay:
+		// 段差を飛ぶときは主人公のレンダリングに特殊処理
+		switch {
+		case game.coolTime > 16:
+			op.GeoM.Translate(float64(64), float64(64-(4+(32-game.coolTime))))
+			screen.DrawImage(game.Ethan.Avatar(), op)
+		default:
+			op.GeoM.Translate(float64(64), float64(64-(4+game.coolTime)))
+			screen.DrawImage(game.Ethan.Avatar(), op)
+		}
+
+		hopOp := &ebiten.DrawImageOptions{}
+		hopOp.GeoM.Translate(float64(64), float64(64+8-4))
+		screen.DrawImage(game.Ethan.HopImage, hopOp)
+	}
 }
 
 func doWarp(warp *stage.Warp) {
