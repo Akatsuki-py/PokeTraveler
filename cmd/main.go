@@ -237,9 +237,6 @@ func moveObject() {
 func renderEthan(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	switch game.Mode {
-	case modeStage:
-		op.GeoM.Translate(float64(64), float64(64-4))
-		screen.DrawImage(game.Ethan.Avatar(), op)
 	case modeOneWay:
 		// 段差を飛ぶときは主人公のレンダリングに特殊処理
 		switch {
@@ -254,6 +251,9 @@ func renderEthan(screen *ebiten.Image) {
 		hopOp := &ebiten.DrawImageOptions{}
 		hopOp.GeoM.Translate(float64(64), float64(64+8-4))
 		screen.DrawImage(game.Ethan.HopImage, hopOp)
+	default:
+		op.GeoM.Translate(float64(64), float64(64-4))
+		screen.DrawImage(game.Ethan.Avatar(), op)
 	}
 }
 
