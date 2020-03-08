@@ -1,4 +1,110 @@
 {
     "objects": [
+        {
+            "id": 206,
+            "start": [
+                20,
+                18
+            ],
+            "territory": [
+                [
+                    20,
+                    18
+                ],
+                [
+                    21,
+                    18
+                ],
+                [
+                    19,
+                    18
+                ],
+                [
+                    20,
+                    19
+                ],
+                [
+                    21,
+                    19
+                ],
+                [
+                    19,
+                    19
+                ]
+            ],
+            "direction": 2,
+            "type": "npc",
+            "text": [
+                "Are you\na Gym Challenger?",
+                "Gym Leader\nJosiah is",
+                "away from\nGym right now.",
+                ":end"
+            ]
+        },
+        {
+            "id": 633,
+            "start": [
+                14,
+                13
+            ],
+            "territory": [
+                [
+                    14,
+                    13
+                ],
+                [
+                    14,
+                    14
+                ],
+                [
+                    15,
+                    13
+                ]
+            ],
+            "direction": 1,
+            "type": "npc",
+            "text": [
+                "Hello PokeMaker!",
+                "Please enjoy\nthis hack!",
+                ":end"
+            ]
+        },
+        {
+            "id": 497,
+            "start": [
+                32,
+                27
+            ],
+            "territory": [
+                [
+                    32,
+                    27
+                ],
+                [
+                    33,
+                    27
+                ],
+                [
+                    31,
+                    27
+                ],
+                [
+                    32,
+                    28
+                ],
+                [
+                    32,
+                    26
+                ]
+            ],
+            "direction": 1,
+            "type": "npc",
+            "text": [
+                "Oxalis City is\na nice city.",
+                "This city is\nlocated in Naljo.",
+                "Please try to play\nPokemon Prism...",
+                ":end"
+            ]
+        }
     ]
 }
