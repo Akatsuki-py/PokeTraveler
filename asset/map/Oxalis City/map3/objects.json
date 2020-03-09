@@ -1,4 +1,23 @@
 {
     "objects": [
+        {
+            "id": 504,
+            "start": [
+                1,
+                3
+            ],
+            "territory": [
+                [
+                    1,
+                    3
+                ]
+            ],
+            "direction": 2,
+            "type": "npc",
+            "text": [
+                "lmao",
+                ":end"
+            ]
+        }
     ]
 }
