@@ -34,7 +34,7 @@ var lastAction int
 
 func initGame(game *Game) {
 	game.Count = 0
-	game.Ethan = *ethan.New(37*16, 16*16)
+	game.Ethan = *ethan.New(1, 37*16, 16*16)
 	game.Mode = modeStage
 
 	char.Init()
