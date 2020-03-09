@@ -4,7 +4,7 @@
             "x": 19,
             "y": 32,
             "dst": "Oxalis City",
-            "dstid": 4,
+            "dstid": 2,
             "pos": [
                 4,
                 1
@@ -15,7 +15,7 @@
             "x": 20,
             "y": 32,
             "dst": "Oxalis City",
-            "dstid": 4,
+            "dstid": 2,
             "pos": [
                 5,
                 1
@@ -26,7 +26,7 @@
             "x": 7,
             "y": 19,
             "dst": "Ecruteak City",
-            "dstid": 3,
+            "dstid": 5,
             "pos": [
                 3,
                 7
@@ -37,7 +37,7 @@
             "x": 15,
             "y": 25,
             "dst": "Ecruteak City",
-            "dstid": 2,
+            "dstid": 4,
             "pos": [
                 3,
                 7
@@ -48,7 +48,7 @@
             "x": 25,
             "y": 25,
             "dst": "Ecruteak City",
-            "dstid": 4,
+            "dstid": 2,
             "pos": [
                 3,
                 7
@@ -59,7 +59,7 @@
             "x": 31,
             "y": 19,
             "dst": "Ecruteak City",
-            "dstid": 5,
+            "dstid": 3,
             "pos": [
                 3,
                 7
