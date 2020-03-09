@@ -33,7 +33,7 @@ func (win *Window) Render(screen *ebiten.Image) {
 	text := win.Text[win.page]
 	win.renderText(tw, text)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(0), float64(96))
+	op.GeoM.Translate(float64(0), float64(95))
 	screen.DrawImage(tw, op)
 }
 

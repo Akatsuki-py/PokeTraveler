@@ -1,4 +1,63 @@
 {
     "objects": [
+        {
+            "id": 503,
+            "start": [
+                3,
+                1
+            ],
+            "territory": [
+                [
+                    3,
+                    1
+                ]
+            ],
+            "direction": 1,
+            "type": "npc",
+            "text": [
+                "lmao",
+                ":end"
+            ]
+        },
+        {
+            "id": 793,
+            "start": [
+                1,
+                4
+            ],
+            "territory": [
+                [
+                    1,
+                    4
+                ]
+            ],
+            "direction": 1,
+            "type": "npc",
+            "text": [
+                "I want to eat\nudon...",
+                ":end"
+            ]
+        },
+        {
+            "id": 206,
+            "start": [
+                7,
+                5
+            ],
+            "territory": [
+                [
+                    7,
+                    5
+                ]
+            ],
+            "direction": 3,
+            "type": "npc",
+            "text": [
+                "Pokemon Center is\na rest area",
+                "not only for\ntrainers",
+                "but also for\ntravelers!",
+                ":end"
+            ]
+        }
     ]
 }

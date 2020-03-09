@@ -64,7 +64,6 @@
             "direction": 1,
             "type": "npc",
             "text": [
-                "Hello PokeMaker!",
                 "Please enjoy\nthis hack!",
                 ":end"
             ]
