@@ -193,17 +193,11 @@ func (ethan *Ethan) Exist(x, y int) bool {
 	existY := false
 	if ethan.Moving() {
 		switch ethan.direction {
-		case Up:
+		case Up, Down:
 			existX = ethan.X/16 == x/16
-			existY = (ethan.Y-15)/16 == y/16
-		case Down:
-			existX = ethan.X/16 == x/16
-			existY = (ethan.Y+15)/16 == y/16
-		case Right:
-			existX = (ethan.X+15)/16 == x/16
-			existY = ethan.Y/16 == y/16
-		case Left:
-			existX = (ethan.X-15)/16 == x/16
+			existY = (ethan.Y-15)/16 == y/16 || (ethan.Y+15)/16 == y/16
+		case Right, Left:
+			existX = (ethan.X+15)/16 == x/16 || (ethan.X-15)/16 == x/16
 			existY = ethan.Y/16 == y/16
 		}
 	} else {

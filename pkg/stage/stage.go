@@ -120,7 +120,7 @@ func (stage *Stage) GetObject(x, y int) (target *object.Object) {
 	for _, o := range stage.Objects {
 		switch o.Direction {
 		case object.Up:
-			if o.X/16 == (x+15)/16 && ((o.Y+16)/16-1) == y/16 {
+			if o.X/16 == (x+15)/16 && ((o.Y-16)/16+1) == y/16 {
 				target = o
 			}
 		case object.Down:
@@ -132,7 +132,7 @@ func (stage *Stage) GetObject(x, y int) (target *object.Object) {
 				target = o
 			}
 		case object.Left:
-			if ((o.X+16)/16-1) == x/16 && o.Y/16 == (y+15)/16 {
+			if ((o.X-16)/16+1) == x/16 && o.Y/16 == (y+15)/16 {
 				target = o
 			}
 		}

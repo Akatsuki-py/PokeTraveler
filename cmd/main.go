@@ -218,7 +218,7 @@ func moveObject() {
 			obj.GoAhead()
 		}
 
-		if game.Count%120 == 0 {
+		if game.Count%100 == 0 {
 			direction := object.RandamDirection()
 			aheadX, aheadY := obj.Ahead(direction)
 			property := game.Stage.GetProp(aheadX, aheadY)
