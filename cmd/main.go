@@ -6,8 +6,11 @@ import (
 	"demo/pkg/object"
 	"demo/pkg/sound"
 	"demo/pkg/stage"
+	"demo/pkg/townmap"
 	"demo/pkg/window"
+	"fmt"
 	"image/color"
+	"os"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -17,6 +20,7 @@ const (
 	modeOneWay // 段差
 	modeWindow
 	modeWarp
+	modeTownMap
 )
 
 // Game ゲーム情報を管理する
@@ -26,6 +30,7 @@ type Game struct {
 	Ethan    ethan.Ethan
 	Mode     int
 	coolTime uint
+	TownMap  townmap.TownMap
 }
 
 var game Game
@@ -36,6 +41,7 @@ func initGame(game *Game) {
 	game.Count = 0
 	game.Ethan = *ethan.New(1, 37*16, 16*16)
 	game.Mode = modeStage
+	game.TownMap = *townmap.New()
 
 	char.Init()
 	sound.InitSE()
@@ -136,6 +142,9 @@ func render(screen *ebiten.Image) error {
 					win.Render(screen)
 				}
 				game.coolTime = 17
+			case btnStart() && isActionOK():
+				game.Mode = modeTownMap
+				game.coolTime = 17
 			}
 
 			// 障害物や段差を考慮して前に進ませる
@@ -193,6 +202,12 @@ func render(screen *ebiten.Image) error {
 			game.Mode = modeStage
 		}
 		renderEthan(screen)
+	case modeTownMap:
+		if btnStart() && isActionOK() {
+			game.Mode = modeStage
+			game.coolTime = 17
+		}
+		renderTownMap(screen)
 	}
 
 	return nil
@@ -272,18 +287,34 @@ func doWarp(warp *stage.Warp) {
 }
 
 func main() {
+	os.Exit(run())
+}
+
+func run() int {
 	initGame(&game)
 	game.Stage.Load("Oxalis City", 1)
 
 	if err := ebiten.Run(render, 160, 144, 2, "demo"); err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, err.Error())
+		return 1
 	}
+	return 0
 }
 
 func btnA() bool {
 	return ebiten.IsKeyPressed(ebiten.KeyS)
 }
 
+func btnStart() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyEnter)
+}
+
 func isActionOK() bool {
 	return game.coolTime == 0
+}
+
+func renderTownMap(screen *ebiten.Image) {
+	region := "naljo"
+	tm := game.TownMap.Regions[region].Image
+	screen.DrawImage(tm, nil)
 }

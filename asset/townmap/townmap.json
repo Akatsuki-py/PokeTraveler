@@ -1,0 +1,18 @@
+{
+    "naljo": {
+        "points": [
+            {
+                "name": "Oxalis City",
+                "x": 4,
+                "y": 5,
+                "category": "town"
+            },
+            {
+                "name": "Ecruteak City",
+                "x": 4,
+                "y": 3,
+                "category": "town"
+            }
+        ]
+    }
+}
