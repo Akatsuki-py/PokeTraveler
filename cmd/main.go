@@ -39,7 +39,7 @@ var lastAction int
 
 func initGame(game *Game) {
 	game.Count = 0
-	game.Ethan = *ethan.New(1, 37*16, 16*16)
+	game.Ethan = *ethan.New(2, 37*16, 16*16)
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 
