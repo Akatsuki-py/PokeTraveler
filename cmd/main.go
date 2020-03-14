@@ -3,6 +3,7 @@ package main
 import (
 	"demo/pkg/char"
 	"demo/pkg/ethan"
+	"demo/pkg/menu"
 	"demo/pkg/object"
 	"demo/pkg/sound"
 	"demo/pkg/stage"
@@ -20,6 +21,7 @@ const (
 	modeOneWay // 段差
 	modeWindow
 	modeWarp
+	modeMenu
 	modeTownMap
 )
 
@@ -30,6 +32,7 @@ type Game struct {
 	Ethan    ethan.Ethan
 	Mode     int
 	coolTime uint
+	Menu     menu.Menu
 	TownMap  townmap.TownMap
 }
 
@@ -38,12 +41,14 @@ var win *window.Window
 var lastAction int
 
 func initGame(game *Game) {
+	char.Init()
+
 	game.Count = 0
 	game.Ethan = *ethan.New(2, 37*16, 16*16)
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
+	game.Menu = *menu.New()
 
-	char.Init()
 	sound.InitSE()
 }
 
@@ -141,7 +146,7 @@ func render(screen *ebiten.Image) error {
 				}
 				game.coolTime = 17
 			case btnStart() && isActionOK():
-				game.Mode = modeTownMap
+				game.Mode = modeMenu
 				game.coolTime = 17
 			}
 
@@ -200,6 +205,20 @@ func render(screen *ebiten.Image) error {
 			game.Mode = modeStage
 		}
 		renderEthan(screen)
+	case modeMenu:
+		switch {
+		case btnStart() && isActionOK():
+			game.Mode = modeStage
+			game.coolTime = 17
+		case btnUp() && isActionOK():
+			game.Menu.Decrement()
+			game.coolTime = 17
+		case btnDown() && isActionOK():
+			game.Menu.Increment()
+			game.coolTime = 17
+		}
+		renderEthan(screen)
+		renderMenu(screen)
 	case modeTownMap:
 		if btnStart() && isActionOK() {
 			game.Mode = modeStage
@@ -303,12 +322,26 @@ func btnA() bool {
 	return ebiten.IsKeyPressed(ebiten.KeyS)
 }
 
+func btnUp() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyUp)
+}
+
+func btnDown() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyDown)
+}
+
 func btnStart() bool {
 	return ebiten.IsKeyPressed(ebiten.KeyEnter)
 }
 
 func isActionOK() bool {
 	return game.coolTime == 0
+}
+
+func renderMenu(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(84), float64(0))
+	screen.DrawImage(game.Menu.Image(), op)
 }
 
 func renderTownMap(screen *ebiten.Image) {
