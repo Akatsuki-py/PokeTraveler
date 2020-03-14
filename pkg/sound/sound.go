@@ -21,6 +21,7 @@ func InitSE() {
 	setSE(assetPath+"/se/GoInside.wav", GoInsideSE)
 	setSE(assetPath+"/se/GoOutside.wav", GoOutsideSE)
 	setSE(assetPath+"/se/Ledge.wav", LedgeSE)
+	setSE(assetPath+"/se/Menu.wav", MenuSE)
 }
 
 func InitBGM(bgmname string, fade bool) {

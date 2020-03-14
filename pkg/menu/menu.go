@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	cursorImage *ebiten.Image
-	menuImage   *ebiten.Image
+	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
+	menuImage, _, _   = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
 )
 
 type Menu struct {
@@ -19,11 +19,8 @@ type Menu struct {
 }
 
 func New() *Menu {
-	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
-	menuImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
-
 	m := &Menu{
-		list: []string{"Map", "Save"},
+		list: []string{"Map", "Save", "Exit"},
 	}
 
 	for i, item := range m.list {
@@ -70,4 +67,10 @@ func (m *Menu) setCursor(cursor int) *ebiten.Image {
 	op.GeoM.Translate(float64(8), float64(16*cursor+16))
 	result.DrawImage(cursorImage, op)
 	return result
+}
+
+// Exit - メニューを閉じるときの処理
+func (m *Menu) Exit() {
+	m.cursor = 0
+	m.image = m.setCursor(0)
 }

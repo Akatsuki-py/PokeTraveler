@@ -8,6 +8,7 @@ import (
 	"demo/pkg/sound"
 	"demo/pkg/stage"
 	"demo/pkg/townmap"
+	"demo/pkg/util"
 	"demo/pkg/window"
 	"fmt"
 	"image/color"
@@ -42,17 +43,20 @@ var lastAction int
 
 func initGame(game *Game) {
 	char.Init()
-
-	game.Count = 0
 	game.Ethan = *ethan.New(2, 37*16, 16*16)
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
-
 	sound.InitSE()
+
+	game.Stage.Load("Oxalis City", 1)
 }
 
 func render(screen *ebiten.Image) error {
+	if game.Count == 0 {
+		initGame(&game)
+	}
+
 	defer func() {
 		game.Count++
 		if game.Count%2 == 0 && win != nil {
@@ -104,6 +108,7 @@ func render(screen *ebiten.Image) error {
 					game.Ethan.SetDirection(object.Up)
 					game.coolTime = 5
 				}
+
 			case ebiten.IsKeyPressed(ebiten.KeyDown) && isActionOK():
 				if game.Ethan.IsOriented(object.Down) {
 					goAhead = true
@@ -112,6 +117,7 @@ func render(screen *ebiten.Image) error {
 					game.Ethan.SetDirection(object.Down)
 					game.coolTime = 5
 				}
+
 			case ebiten.IsKeyPressed(ebiten.KeyRight) && isActionOK():
 				if game.Ethan.IsOriented(object.Right) {
 					goAhead = true
@@ -120,6 +126,7 @@ func render(screen *ebiten.Image) error {
 					game.Ethan.SetDirection(object.Right)
 					game.coolTime = 5
 				}
+
 			case ebiten.IsKeyPressed(ebiten.KeyLeft) && isActionOK():
 				if game.Ethan.IsOriented(object.Left) {
 					goAhead = true
@@ -128,7 +135,8 @@ func render(screen *ebiten.Image) error {
 					game.Ethan.SetDirection(object.Left)
 					game.coolTime = 5
 				}
-			case btnA() && isActionOK():
+
+			case util.BtnA() && isActionOK():
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if action := game.Stage.GetAction(game.Ethan.Ahead()); action != nil {
 					// アクションがあるならそのアクションを取らせる
@@ -145,8 +153,11 @@ func render(screen *ebiten.Image) error {
 					win.Render(screen)
 				}
 				game.coolTime = 17
-			case btnStart() && isActionOK():
+
+			case util.BtnStart() && isActionOK():
+				// メニューを開く
 				game.Mode = modeMenu
+				sound.Menu()
 				game.coolTime = 17
 			}
 
@@ -181,6 +192,7 @@ func render(screen *ebiten.Image) error {
 			}
 		}
 		renderEthan(screen)
+
 	case modeWindow:
 		win.Render(screen)
 		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
@@ -193,11 +205,13 @@ func render(screen *ebiten.Image) error {
 			game.coolTime = 17
 		}
 		renderEthan(screen)
+
 	case modeWarp:
 		screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
 		if game.coolTime == 0 {
 			game.Mode = modeStage
 		}
+
 	case modeOneWay:
 		if game.coolTime > 0 {
 			game.Ethan.GoAhead()
@@ -205,23 +219,43 @@ func render(screen *ebiten.Image) error {
 			game.Mode = modeStage
 		}
 		renderEthan(screen)
+
 	case modeMenu:
 		switch {
-		case btnStart() && isActionOK():
+		case util.BtnA() && isActionOK():
+			sound.Select()
+			game.coolTime = 17
+
+			switch game.Menu.Current() {
+			case "Map":
+				game.Mode = modeTownMap
+			case "Exit":
+				game.Menu.Exit()
+				game.Mode = modeStage
+			}
+
+		case (util.BtnStart() || util.BtnB()) && isActionOK():
+			game.Menu.Exit()
 			game.Mode = modeStage
 			game.coolTime = 17
-		case btnUp() && isActionOK():
+
+		case util.KeyUp() && isActionOK():
+			sound.Select()
 			game.Menu.Decrement()
 			game.coolTime = 17
-		case btnDown() && isActionOK():
+
+		case util.KeyDown() && isActionOK():
+			sound.Select()
 			game.Menu.Increment()
 			game.coolTime = 17
 		}
+
 		renderEthan(screen)
 		renderMenu(screen)
+
 	case modeTownMap:
-		if btnStart() && isActionOK() {
-			game.Mode = modeStage
+		if (util.BtnStart() || util.BtnB()) && isActionOK() {
+			game.Mode = modeMenu
 			game.coolTime = 17
 		}
 		renderTownMap(screen)
@@ -308,30 +342,11 @@ func main() {
 }
 
 func run() int {
-	initGame(&game)
-	game.Stage.Load("Oxalis City", 1)
-
 	if err := ebiten.Run(render, 160, 144, 2, "PokeTraveler"); err != nil {
 		fmt.Fprintf(os.Stderr, err.Error())
 		return 1
 	}
 	return 0
-}
-
-func btnA() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyS)
-}
-
-func btnUp() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyUp)
-}
-
-func btnDown() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyDown)
-}
-
-func btnStart() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyEnter)
 }
 
 func isActionOK() bool {
