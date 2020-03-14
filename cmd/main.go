@@ -294,7 +294,7 @@ func run() int {
 	initGame(&game)
 	game.Stage.Load("Oxalis City", 1)
 
-	if err := ebiten.Run(render, 160, 144, 2, "demo"); err != nil {
+	if err := ebiten.Run(render, 160, 144, 2, "PokeTraveler"); err != nil {
 		fmt.Fprintf(os.Stderr, err.Error())
 		return 1
 	}
@@ -314,7 +314,8 @@ func isActionOK() bool {
 }
 
 func renderTownMap(screen *ebiten.Image) {
-	region := "naljo"
-	tm := game.TownMap.Regions[region].Image
+	stage := game.Stage.Name()
+	avatar := game.Ethan.AvatarDown()
+	tm := game.TownMap.Open(stage, avatar)
 	screen.DrawImage(tm, nil)
 }

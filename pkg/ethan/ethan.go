@@ -95,6 +95,11 @@ func (ethan *Ethan) Avatar() *ebiten.Image {
 	return ethan.Image[0]
 }
 
+// AvatarDown - 下向きのアバター
+func (ethan *Ethan) AvatarDown() *ebiten.Image {
+	return ethan.Image[0]
+}
+
 // Set - 主人公の位置を指定します。座標の変化量ではなく、移動先の座標を指定します。 -1が引数に渡された場合は変動しません。
 func (ethan *Ethan) Set(x, y int) {
 	if x >= 0 {
