@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
-	menuImage, _, _   = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
+	cursorImage *ebiten.Image
+	menuImage   *ebiten.Image
 )
 
 type Menu struct {
@@ -19,6 +19,9 @@ type Menu struct {
 }
 
 func New() *Menu {
+	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
+	menuImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
+
 	m := &Menu{
 		list: []string{"Map", "Save"},
 	}
