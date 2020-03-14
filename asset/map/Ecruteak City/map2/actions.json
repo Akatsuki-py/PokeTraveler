@@ -1,4 +1,23 @@
 {
     "actions": [
+        {
+            "x": 3,
+            "y": 2,
+            "type": "text",
+            "value": [
+                "sorry.",
+                "This is for\nPokemon trainers.",
+                ":end"
+            ]
+        },
+        {
+            "x": 9,
+            "y": 1,
+            "type": "text",
+            "value": [
+                "Under maintenance",
+                ":end"
+            ]
+        }
     ]
 }

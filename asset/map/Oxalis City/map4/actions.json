@@ -1,4 +1,13 @@
 {
     "actions": [
+        {
+            "x": 1,
+            "y": 4,
+            "type": "text",
+            "value": [
+                "This music is\nmy favorite!",
+                ":end"
+            ]
+        }
     ]
 }

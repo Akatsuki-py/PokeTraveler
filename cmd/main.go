@@ -124,12 +124,10 @@ func render(screen *ebiten.Image) error {
 					game.coolTime = 5
 				}
 			case btnA() && isActionOK():
-				propety := game.Stage.GetProp(game.Ethan.Ahead())
 				object := game.Stage.GetObject(game.Ethan.Ahead())
-				if propety.Action == 1 {
-					action := game.Stage.GetAction(game.Ethan.Ahead())
+				if action := game.Stage.GetAction(game.Ethan.Ahead()); action != nil {
 					// アクションがあるならそのアクションを取らせる
-					if action != nil && action.Type == "text" {
+					if action.Type == "text" {
 						game.Mode = modeWindow
 						win = window.New(action.Value)
 						win.Render(screen)

@@ -1,4 +1,14 @@
 {
     "actions": [
+        {
+            "x": 2,
+            "y": 3,
+            "type": "text",
+            "value": [
+                "sorry.",
+                "This is for\nPokemon trainers.",
+                ":end"
+            ]
+        }
     ]
 }
