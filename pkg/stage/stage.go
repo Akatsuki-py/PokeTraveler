@@ -31,6 +31,7 @@ type Stage struct {
 	Objects    []*object.Object
 	Warps      []*Warp
 	BGM        *BGM
+	Meta       *Meta
 }
 
 const (
@@ -92,6 +93,9 @@ func (stage *Stage) Load(stagename string, index int) {
 	stage.loadObjects(fmt.Sprintf("%s/%s/map%d/objects.json", assetPath, stagename, index))
 	stage.loadWarps(fmt.Sprintf("%s/%s/map%d/warp.json", assetPath, stagename, index))
 	stage.loadBGM(fmt.Sprintf("%s/%s/map%d/bgm.json", assetPath, stagename, index))
+
+	// メタデータ
+	stage.Meta = newMeta(stagename)
 }
 
 // Name - Get stage name
