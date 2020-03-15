@@ -7,8 +7,9 @@ import (
 )
 
 type Meta struct {
-	Region  string  `json:"region"`
-	Neutral Neutral `json:"neutral"`
+	Region  string  `json:"region"`  // 地方名
+	Neutral Neutral `json:"neutral"` // 空を飛ぶなどでこのステージに来た時の開始地点
+	Popup   bool    `json:"popup"`   // このステージに来た時にポップアップを行うか
 }
 
 type Neutral struct {

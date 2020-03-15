@@ -2,8 +2,8 @@
     "region": "naljo",
     "neutral": {
         "id": 1,
-        "x": 25,
-        "y": 26
+        "x": 4,
+        "y": 1
     },
-    "popup": true
+    "popup": false
 }

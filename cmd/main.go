@@ -93,7 +93,7 @@ func render(screen *ebiten.Image) error {
 			}
 
 			if warp := game.Stage.GetWarp(game.Ethan.X, game.Ethan.Y); warp != nil && (warp.InOut == "in" || warp.InOut == "none") {
-				doWarp(warp)
+				changeStage(screen, warp)
 			}
 		} else {
 			// 主人公がマス目にいるときはアクションを受け付ける
@@ -181,7 +181,7 @@ func render(screen *ebiten.Image) error {
 					}
 				} else if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
 					// 移動先にワープブロックがある
-					doWarp(warp)
+					changeStage(screen, warp)
 				} else if property.Block == 0 && object == nil {
 					// 移動先に何もない
 					game.Ethan.GoAhead()
@@ -323,7 +323,9 @@ func renderEthan(screen *ebiten.Image) {
 	}
 }
 
-func doWarp(warp *stage.Warp) {
+func changeStage(screen *ebiten.Image, warp *stage.Warp) {
+	previous := game.Stage.Name()
+
 	if warp.InOut == "in" {
 		sound.GoInside()
 		game.Mode = modeWarp
@@ -335,6 +337,22 @@ func doWarp(warp *stage.Warp) {
 	}
 	game.Stage.Load(warp.Dst, warp.DstID)
 	game.Ethan.Set(warp.Pos[0]*16, warp.Pos[1]*16)
+
+	current := warp.Dst
+
+	// ステージが変わった際はポップアップを出す
+	if previous != current {
+		if popup, ok := game.Stage.Popup(); ok {
+			start := game.Count
+			go func() {
+				for game.Count-start < 120 {
+					op := &ebiten.DrawImageOptions{}
+					op.GeoM.Translate(float64(0), float64(112))
+					screen.DrawImage(popup, op)
+				}
+			}()
+		}
+	}
 }
 
 func main() {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"demo/pkg/char"
 	"demo/pkg/object"
 	"demo/pkg/sound"
 
@@ -36,6 +37,10 @@ type Stage struct {
 
 const (
 	assetPath = "asset/map"
+)
+
+var (
+	popupImage, _, _ = ebitenutil.NewImageFromFile("asset/map/popup.png", ebiten.FilterDefault)
 )
 
 // Property - タイルのプロパティ
@@ -254,4 +259,18 @@ func (stage *Stage) loadBGM(filename string) {
 		sound.ExitBGM()
 		go sound.InitBGM(bgm.Name, bgm.Fade)
 	}
+}
+
+// Popup - マップのPopup画像を取得する
+func (stage *Stage) Popup() (popup *ebiten.Image, ok bool) {
+	ok = stage.Meta.Popup
+	if ok {
+		// ポップアップが有効な時
+		popup, _ = ebiten.NewImageFromImage(popupImage, ebiten.FilterDefault)
+		name := stage.Name()
+		x := 72 - len(stage.Name())*8/2
+		char.RenderString(popup, name, float64(x), 16)
+	}
+
+	return popup, ok
 }

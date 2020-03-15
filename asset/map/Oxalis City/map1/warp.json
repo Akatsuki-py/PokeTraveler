@@ -25,8 +25,8 @@
         {
             "x": 21,
             "y": 3,
-            "dst": "Oxalis City",
-            "dstid": 4,
+            "dst": "Route",
+            "dstid": 1,
             "pos": [
                 4,
                 7
