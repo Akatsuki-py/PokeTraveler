@@ -26,34 +26,38 @@ func openBGM(path string) {
 }
 
 func playBGM(fade bool) {
-	p, _ := audio.NewPlayer(audioContext, bgm.stream)
+	l := audio.NewInfiniteLoop(bgm.stream, bgm.stream.Length())
+	p, _ := audio.NewPlayer(audioContext, l)
 
-	// フェードを用いるBGMは10フレームで完全に再生される
+	fadeCount := 40
+	fadeVolume := 1. / float64(fadeCount)
+
+	// フェードを用いるBGMはfadeCountフレームで完全に再生される
 	fadeinCount := 0
 	if fade {
-		fadeinCount = 10
+		fadeinCount = fadeCount
 		p.Play()
-		p.SetVolume(float64(10-fadeinCount) * 0.1)
+		p.SetVolume(float64(fadeCount-fadeinCount) * fadeVolume)
 	} else {
 		p.Play()
 	}
 	fadeoutCount := 0
 
 loop:
-	for range time.Tick(time.Millisecond * 100) {
+	for range time.Tick(time.Millisecond * 10) {
 		select {
 		case <-done:
 			done = make(chan interface{})
 			if fade {
-				// フェードアウトには10フレーム要する
-				fadeoutCount = 10
+				// フェードアウトにはfadeCountフレーム要する
+				fadeoutCount = fadeCount
 			} else {
 				p.Close()
 				break loop
 			}
 		default:
 			if fadeoutCount > 0 {
-				p.SetVolume(float64(fadeoutCount) * 0.1)
+				p.SetVolume(float64(fadeoutCount) * fadeVolume)
 				fadeoutCount--
 				if fadeoutCount == 0 {
 					p.Close()
@@ -62,11 +66,7 @@ loop:
 			}
 			if fadeinCount > 0 {
 				fadeinCount--
-				p.SetVolume(float64(10-fadeinCount) * 0.1)
-			}
-			if !p.IsPlaying() {
-				p.Rewind()
-				p.Play()
+				p.SetVolume(float64(fadeCount-fadeinCount) * fadeVolume)
 			}
 		}
 	}
