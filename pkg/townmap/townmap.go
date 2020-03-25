@@ -1,11 +1,11 @@
 package townmap
 
 import (
-	"demo/pkg/char"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 
+	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )

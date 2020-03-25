@@ -1,4 +1,4 @@
-module demo
+module github.com/Akatsuki-py/PokeTraveler
 
 go 1.13
 

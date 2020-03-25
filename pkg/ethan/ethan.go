@@ -1,9 +1,9 @@
 package ethan
 
 import (
-	"demo/pkg/sound"
 	"fmt"
 
+	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
