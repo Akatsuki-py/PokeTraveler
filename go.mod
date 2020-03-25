@@ -1,4 +1,4 @@
-module github.com/tommy-sho/PokeTraveler
+module github.com/Akatsuki-py/PokeTraveler
 
 go 1.13
 
