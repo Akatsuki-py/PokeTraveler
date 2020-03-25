@@ -1,8 +1,7 @@
 package menu
 
 import (
-	"demo/pkg/char"
-
+	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
