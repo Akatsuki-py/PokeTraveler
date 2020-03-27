@@ -8,6 +8,12 @@
                 "category": "town"
             },
             {
+                "name": "Route",
+                "x": 4,
+                "y": 4,
+                "category": "route"
+            },
+            {
                 "name": "Ecruteak City",
                 "x": 4,
                 "y": 3,
