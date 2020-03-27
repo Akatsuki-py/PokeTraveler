@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"demo/pkg/char"
-	"demo/pkg/object"
-	"demo/pkg/sound"
-
+	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )

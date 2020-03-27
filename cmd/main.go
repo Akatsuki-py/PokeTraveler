@@ -1,19 +1,19 @@
 package main
 
 import (
-	"demo/pkg/char"
-	"demo/pkg/ethan"
-	"demo/pkg/menu"
-	"demo/pkg/object"
-	"demo/pkg/sound"
-	"demo/pkg/stage"
-	"demo/pkg/townmap"
-	"demo/pkg/util"
-	"demo/pkg/window"
 	"fmt"
 	"image/color"
 	"os"
 
+	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/ethan"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/menu"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/stage"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/townmap"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/window"
 	"github.com/hajimehoshi/ebiten"
 )
 

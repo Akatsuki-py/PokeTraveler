@@ -1,9 +1,8 @@
 package window
 
 import (
-	"demo/pkg/char"
-	"demo/pkg/sound"
-
+	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )

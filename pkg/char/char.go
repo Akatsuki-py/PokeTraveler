@@ -3,8 +3,7 @@ package char
 import (
 	"fmt"
 
-	"demo/pkg/util"
-
+	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
