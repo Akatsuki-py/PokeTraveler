@@ -21,6 +21,7 @@ var stageToRegion map[string]string
 
 type TownMap struct {
 	Regions map[string]*Region
+	Cursor  Cursor
 }
 
 type Region struct {
@@ -30,8 +31,8 @@ type Region struct {
 
 type Point struct {
 	Name     string `json:"name"`
-	X        uint   `json:"x"`
-	Y        uint   `json:"y"`
+	X        uint   `json:"x"` // X は タイル(16*16)単位
+	Y        uint   `json:"y"` // Y は タイル(16*16)単位
 	Category string `json:"category"`
 }
 
@@ -112,16 +113,34 @@ func (tm *TownMap) Open(stagename string, avatar *ebiten.Image) *ebiten.Image {
 	}
 
 	// アバターを配置
-	if point, ok := getPoint(region.Points, stagename); ok {
+	point, ok := getPoint(region.Points, stagename)
+	if ok {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(point.X*16+4), float64(point.Y*16+4))
 		background.DrawImage(avatar, op)
 	}
 
 	// カーソルを配置
+	var cursorX, cursorY int
+	if tm.Cursor.Valid {
+		cursorX, cursorY = tm.Cursor.GetXY()
+	} else {
+		cursorX, cursorY = int(point.X*16), int(point.Y*16) // カーソルの位置が未初期化
+	}
+	{
+		tm.Cursor.SetXY(cursorX, cursorY)
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(cursorX+4), float64(cursorY+4))
+		background.DrawImage(cursorImage, op)
+	}
 
 	// 最後にマップ名とマップイメージを合体
-	title := getTitle(stagename)
+	cursorTileX, cursorTileY := tm.Cursor.GetTileXY()
+	titleName := ""
+	if point, ok := getPointByXY(region.Points, cursorTileX, cursorTileY); ok {
+		titleName = point.Name
+	}
+	title := getTitle(titleName)
 	result, _ := ebiten.NewImage(160, 144, ebiten.FilterDefault)
 	result.DrawImage(title, nil)
 	{
@@ -136,6 +155,16 @@ func (tm *TownMap) Open(stagename string, avatar *ebiten.Image) *ebiten.Image {
 func getPoint(points []Point, stagename string) (p Point, ok bool) {
 	for _, point := range points {
 		if stagename == point.Name {
+			return point, true
+		}
+	}
+
+	return Point{}, false
+}
+
+func getPointByXY(points []Point, tileX, tileY int) (p Point, ok bool) {
+	for _, point := range points {
+		if tileX == int(point.X) && tileY == int(point.Y) {
 			return point, true
 		}
 	}

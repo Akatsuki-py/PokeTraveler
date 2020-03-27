@@ -228,6 +228,7 @@ func render(screen *ebiten.Image) error {
 
 			switch game.Menu.Current() {
 			case "Map":
+				game.TownMap.Cursor.Valid = false
 				game.Mode = modeTownMap
 			case "Exit":
 				game.Menu.Exit()
