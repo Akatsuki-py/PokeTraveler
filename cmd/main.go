@@ -15,6 +15,7 @@ import (
 	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/window"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 const (
@@ -24,6 +25,7 @@ const (
 	modeWarp
 	modeMenu
 	modeTownMap
+	modeIntroduction
 )
 
 // Game ゲーム情報を管理する
@@ -41,13 +43,22 @@ var game Game
 var win *window.Window
 var lastAction int
 
+var (
+	creditImage, _, _ = ebitenutil.NewImageFromFile("asset/intro/credit.png", ebiten.FilterDefault)
+	titleImage, _, _  = ebitenutil.NewImageFromFile("asset/intro/title.png", ebiten.FilterDefault)
+)
+
 func initGame(game *Game) {
 	char.Init()
+	sound.InitSE()
+	game.Mode = modeIntroduction
+}
+
+func initStage(game *Game) {
 	game.Ethan = *ethan.New(2, 37*16, 16*16)
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
-	sound.InitSE()
 
 	game.Stage.Load("Oxalis City", 1)
 }
@@ -68,6 +79,32 @@ func render(screen *ebiten.Image) error {
 	}()
 
 	if ebiten.IsDrawingSkipped() {
+		return nil
+	}
+
+	if game.Mode == modeIntroduction {
+		switch {
+		case game.Count < 150:
+			screen.DrawImage(creditImage, nil)
+		case game.Count < 210:
+			screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
+		case game.Count == 210:
+			screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
+			sound.ExitBGM()
+			sound.InitBGM("7.mp3", false)
+		case !isActionOK():
+			screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
+			if game.coolTime == 1 {
+				initStage(&game)
+			}
+		default:
+			screen.DrawImage(titleImage, nil)
+
+			if util.BtnStart() && isActionOK() {
+				game.coolTime = 20
+			}
+		}
+
 		return nil
 	}
 
