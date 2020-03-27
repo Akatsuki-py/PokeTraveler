@@ -1,10 +1,10 @@
 package townmap
 
 const (
-	minX = 8
-	minY = 24
-	maxX = 152
-	maxY = 136
+	minX = 0
+	minY = 0
+	maxX = 140
+	maxY = 102
 )
 
 const (
@@ -52,13 +52,27 @@ func (cs *Cursor) Moving() bool {
 	return cs.x%16 != 0 || cs.y%16 != 0
 }
 
+// GoAhead - カーソルを前に進ませる
+func (cs *Cursor) GoAhead() {
+	switch cs.direction {
+	case Up:
+		cs.GoUp()
+	case Down:
+		cs.GoDown()
+	case Right:
+		cs.GoRight()
+	case Left:
+		cs.GoLeft()
+	}
+}
+
 // GoUp - カーソルを上に動かす
 func (cs *Cursor) GoUp() {
 	cs.direction = Up
 	if cs.y == minY {
 		cs.y = maxY
 	} else {
-		cs.y--
+		cs.y -= 2
 	}
 }
 
@@ -68,7 +82,7 @@ func (cs *Cursor) GoDown() {
 	if cs.y == maxY {
 		cs.y = minY
 	} else {
-		cs.y++
+		cs.y += 2
 	}
 }
 
@@ -78,7 +92,7 @@ func (cs *Cursor) GoRight() {
 	if cs.x == maxX {
 		cs.x = minX
 	} else {
-		cs.x++
+		cs.x += 2
 	}
 }
 
@@ -88,6 +102,6 @@ func (cs *Cursor) GoLeft() {
 	if cs.x == minX {
 		cs.x = maxX
 	} else {
-		cs.x--
+		cs.x -= 2
 	}
 }

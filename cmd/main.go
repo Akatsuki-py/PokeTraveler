@@ -255,9 +255,24 @@ func render(screen *ebiten.Image) error {
 		renderMenu(screen)
 
 	case modeTownMap:
-		if (util.BtnStart() || util.BtnB()) && isActionOK() {
-			game.Mode = modeMenu
-			game.coolTime = 17
+		if game.TownMap.Cursor.Moving() {
+			game.TownMap.Cursor.GoAhead()
+		} else {
+			if (util.BtnStart() || util.BtnB()) && isActionOK() {
+				game.Mode = modeMenu
+				game.coolTime = 17
+			} else if isActionOK() {
+				switch {
+				case util.KeyUp():
+					game.TownMap.Cursor.GoUp()
+				case util.KeyDown():
+					game.TownMap.Cursor.GoDown()
+				case util.KeyRight():
+					game.TownMap.Cursor.GoRight()
+				case util.KeyLeft():
+					game.TownMap.Cursor.GoLeft()
+				}
+			}
 		}
 		renderTownMap(screen)
 	}

@@ -21,3 +21,11 @@ func KeyUp() bool {
 func KeyDown() bool {
 	return ebiten.IsKeyPressed(ebiten.KeyDown)
 }
+
+func KeyRight() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyRight)
+}
+
+func KeyLeft() bool {
+	return ebiten.IsKeyPressed(ebiten.KeyLeft)
+}
