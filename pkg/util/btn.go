@@ -2,22 +2,22 @@ package util
 
 import "github.com/hajimehoshi/ebiten"
 
-func BtnA() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyS)
+func BtnA(k ebiten.Key) bool {
+	return ebiten.IsKeyPressed(k)
 }
 
-func BtnB() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyA)
+func BtnB(k ebiten.Key) bool {
+	return ebiten.IsKeyPressed(k)
 }
 
-func BtnStart() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyEnter)
+func BtnStart(k ebiten.Key) bool {
+	return ebiten.IsKeyPressed(k)
 }
 
-func KeyUp() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyUp)
+func KeyUp(k ebiten.Key) bool {
+	return ebiten.IsKeyPressed(k)
 }
 
-func KeyDown() bool {
-	return ebiten.IsKeyPressed(ebiten.KeyDown)
+func KeyDown(k ebiten.Key) bool {
+	return ebiten.IsKeyPressed(k)
 }

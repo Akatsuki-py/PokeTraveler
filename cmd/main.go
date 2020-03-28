@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/config"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/ethan"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/menu"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
@@ -29,6 +30,7 @@ const (
 // Game ゲーム情報を管理する
 type Game struct {
 	Count    int
+	Config   config.Config
 	Stage    stage.Stage
 	Ethan    ethan.Ethan
 	Mode     int
@@ -43,7 +45,15 @@ var lastAction int
 
 func initGame(game *Game) {
 	char.Init()
-	game.Ethan = *ethan.New(2, 37*16, 16*16)
+
+	cfg, err := config.NewConfigFromFile("poketraveler.toml")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	game.Ethan = *ethan.New(cfg.Avatar, 37*16, 16*16)
+	game.Config = cfg
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
@@ -100,7 +110,7 @@ func render(screen *ebiten.Image) error {
 			game.Ethan.Move()
 			goAhead := false
 			switch {
-			case ebiten.IsKeyPressed(ebiten.KeyUp) && isActionOK():
+			case ebiten.IsKeyPressed(game.Config.Controls.Up) && isActionOK():
 				if game.Ethan.IsOriented(object.Up) {
 					goAhead = true
 					game.coolTime = 17
@@ -109,7 +119,7 @@ func render(screen *ebiten.Image) error {
 					game.coolTime = 5
 				}
 
-			case ebiten.IsKeyPressed(ebiten.KeyDown) && isActionOK():
+			case ebiten.IsKeyPressed(game.Config.Controls.Down) && isActionOK():
 				if game.Ethan.IsOriented(object.Down) {
 					goAhead = true
 					game.coolTime = 17
@@ -118,7 +128,7 @@ func render(screen *ebiten.Image) error {
 					game.coolTime = 5
 				}
 
-			case ebiten.IsKeyPressed(ebiten.KeyRight) && isActionOK():
+			case ebiten.IsKeyPressed(game.Config.Controls.Right) && isActionOK():
 				if game.Ethan.IsOriented(object.Right) {
 					goAhead = true
 					game.coolTime = 17
@@ -127,7 +137,7 @@ func render(screen *ebiten.Image) error {
 					game.coolTime = 5
 				}
 
-			case ebiten.IsKeyPressed(ebiten.KeyLeft) && isActionOK():
+			case ebiten.IsKeyPressed(game.Config.Controls.Left) && isActionOK():
 				if game.Ethan.IsOriented(object.Left) {
 					goAhead = true
 					game.coolTime = 17
@@ -136,7 +146,7 @@ func render(screen *ebiten.Image) error {
 					game.coolTime = 5
 				}
 
-			case util.BtnA() && isActionOK():
+			case util.BtnA(game.Config.Controls.A) && isActionOK():
 				object := game.Stage.GetObject(game.Ethan.Ahead())
 				if action := game.Stage.GetAction(game.Ethan.Ahead()); action != nil {
 					// アクションがあるならそのアクションを取らせる
@@ -154,7 +164,7 @@ func render(screen *ebiten.Image) error {
 				}
 				game.coolTime = 17
 
-			case util.BtnStart() && isActionOK():
+			case util.BtnStart(game.Config.Controls.Start) && isActionOK():
 				// メニューを開く
 				game.Mode = modeMenu
 				sound.Menu()
@@ -195,7 +205,7 @@ func render(screen *ebiten.Image) error {
 
 	case modeWindow:
 		win.Render(screen)
-		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
+		if ebiten.IsKeyPressed(game.Config.Controls.A) && isActionOK() {
 			if win.IsEnd() {
 				game.Mode = modeStage
 			} else {
@@ -222,7 +232,7 @@ func render(screen *ebiten.Image) error {
 
 	case modeMenu:
 		switch {
-		case util.BtnA() && isActionOK():
+		case util.BtnA(game.Config.Controls.A) && isActionOK():
 			sound.Select()
 			game.coolTime = 17
 
@@ -235,17 +245,17 @@ func render(screen *ebiten.Image) error {
 				game.Mode = modeStage
 			}
 
-		case (util.BtnStart() || util.BtnB()) && isActionOK():
+		case (util.BtnStart(game.Config.Controls.Start) || util.BtnB(game.Config.Controls.B)) && isActionOK():
 			game.Menu.Exit()
 			game.Mode = modeStage
 			game.coolTime = 17
 
-		case util.KeyUp() && isActionOK():
+		case util.KeyUp(game.Config.Controls.Up) && isActionOK():
 			sound.Select()
 			game.Menu.Decrement()
 			game.coolTime = 17
 
-		case util.KeyDown() && isActionOK():
+		case util.KeyDown(game.Config.Controls.Down) && isActionOK():
 			sound.Select()
 			game.Menu.Increment()
 			game.coolTime = 17
@@ -255,7 +265,7 @@ func render(screen *ebiten.Image) error {
 		renderMenu(screen)
 
 	case modeTownMap:
-		if (util.BtnStart() || util.BtnB()) && isActionOK() {
+		if (util.BtnStart(game.Config.Controls.Start) || util.BtnB(game.Config.Controls.B)) && isActionOK() {
 			game.Mode = modeMenu
 			game.coolTime = 17
 		}
