@@ -53,9 +53,9 @@ func IsSwitchCommand(command uint) bool {
 }
 
 // SetCursor - カーソルをtargetに描画する
-func SetCursor(target *ebiten.Image, cursor int) *ebiten.Image {
+func SetCursor(target *ebiten.Image, cursor, y int) *ebiten.Image {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(8), float64(16*cursor+16))
+	op.GeoM.Translate(float64(8), float64(16*cursor+y))
 	target.DrawImage(cursorImage, op)
 	return target
 }

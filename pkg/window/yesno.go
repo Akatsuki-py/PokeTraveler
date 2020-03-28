@@ -39,7 +39,7 @@ func (ynw *YesNoWindow) SetYes() {
 	ynw.cursor = yes
 
 	target, _ := ebiten.NewImageFromImage(yesnoWindowImage, ebiten.FilterDefault)
-	ynw.image = util.SetCursor(target, yes)
+	ynw.image = util.SetCursor(target, yes, 8)
 }
 
 // SetNo - 選択肢をNoにする
@@ -47,7 +47,7 @@ func (ynw *YesNoWindow) SetNo() {
 	ynw.cursor = no
 
 	target, _ := ebiten.NewImageFromImage(yesnoWindowImage, ebiten.FilterDefault)
-	ynw.image = util.SetCursor(target, no)
+	ynw.image = util.SetCursor(target, no, 8)
 }
 
 // Image - getter of image

@@ -27,6 +27,7 @@ const (
 	modeMenu
 	modeTownMap
 	modeIntroduction
+	modeSave
 )
 
 // Game ゲーム情報を管理する
@@ -39,6 +40,7 @@ type Game struct {
 	Menu     menu.Menu
 	TownMap  townmap.TownMap
 	SaveData *save.Data
+	YesNo    *window.YesNoWindow
 }
 
 var game Game
@@ -66,6 +68,7 @@ func initStage(game *Game) {
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
+	game.YesNo = window.NewYesNoWindow()
 
 	stageName, stageIndex := game.SaveData.Point.Stage, game.SaveData.Point.Index
 	game.Stage.Load(stageName, stageIndex)
@@ -255,10 +258,7 @@ func render(screen *ebiten.Image) error {
 				game.TownMap.Cursor.Valid = false
 				game.Mode = modeTownMap
 			case "Save":
-				game.SaveData.Point.Stage = game.Stage.Name()
-				game.SaveData.Point.Index = game.Stage.Index
-				game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
-				save.Write(game.SaveData)
+				game.Mode = modeSave
 			case "Exit":
 				game.Menu.Exit()
 				game.Mode = modeStage
@@ -304,9 +304,46 @@ func render(screen *ebiten.Image) error {
 			}
 		}
 		renderTownMap(screen)
+
+	case modeSave:
+		renderYesNo(screen)
+		if isActionOK() {
+			switch {
+			case util.BtnA() && game.YesNo.Yes():
+				sound.Select()
+				game.coolTime = 17
+				game.SaveData.Point.Stage = game.Stage.Name()
+				game.SaveData.Point.Index = game.Stage.Index
+				game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
+				save.Write(game.SaveData)
+			case util.BtnA() && !game.YesNo.Yes():
+				sound.Select()
+				game.Mode = modeMenu
+				game.YesNo.SetYes()
+				game.coolTime = 17
+			case util.BtnB():
+				game.Mode = modeMenu
+				game.YesNo.SetYes()
+				game.coolTime = 17
+			case util.KeyUp() && !game.YesNo.Yes():
+				sound.Select()
+				game.YesNo.SetYes()
+				game.coolTime = 17
+			case util.KeyDown() && game.YesNo.Yes():
+				sound.Select()
+				game.YesNo.SetNo()
+				game.coolTime = 17
+			}
+		}
 	}
 
 	return nil
+}
+
+func renderYesNo(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(0), float64(64))
+	screen.DrawImage(game.YesNo.Image(), op)
 }
 
 func renderStage(screen *ebiten.Image) {

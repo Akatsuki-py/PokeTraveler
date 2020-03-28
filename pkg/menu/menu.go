@@ -28,7 +28,7 @@ func New() *Menu {
 	}
 
 	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
-	m.image = util.SetCursor(target, 0)
+	m.image = util.SetCursor(target, 0, 16)
 	return m
 }
 
@@ -39,7 +39,7 @@ func (m *Menu) Increment() {
 		m.cursor = 0
 	}
 	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
-	m.image = util.SetCursor(target, m.cursor)
+	m.image = util.SetCursor(target, m.cursor, 16)
 }
 
 // Decrement cursor
@@ -49,7 +49,7 @@ func (m *Menu) Decrement() {
 		m.cursor = len(m.list) - 1
 	}
 	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
-	m.image = util.SetCursor(target, m.cursor)
+	m.image = util.SetCursor(target, m.cursor, 16)
 }
 
 // Current - get current menu
@@ -66,5 +66,5 @@ func (m *Menu) Image() *ebiten.Image {
 func (m *Menu) Exit() {
 	m.cursor = 0
 	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
-	m.image = util.SetCursor(target, 0)
+	m.image = util.SetCursor(target, 0, 16)
 }
