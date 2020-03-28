@@ -2,13 +2,13 @@ package menu
 
 import (
 	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 var (
-	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
-	menuImage, _, _   = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
+	menuImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
 )
 
 type Menu struct {
@@ -27,7 +27,8 @@ func New() *Menu {
 		char.RenderString(menuImage, item, x, y)
 	}
 
-	m.image = m.setCursor(0)
+	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
+	m.image = util.SetCursor(target, 0)
 	return m
 }
 
@@ -37,7 +38,8 @@ func (m *Menu) Increment() {
 	if m.cursor == len(m.list) {
 		m.cursor = 0
 	}
-	m.image = m.setCursor(m.cursor)
+	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
+	m.image = util.SetCursor(target, m.cursor)
 }
 
 // Decrement cursor
@@ -46,7 +48,8 @@ func (m *Menu) Decrement() {
 	if m.cursor < 0 {
 		m.cursor = len(m.list) - 1
 	}
-	m.image = m.setCursor(m.cursor)
+	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
+	m.image = util.SetCursor(target, m.cursor)
 }
 
 // Current - get current menu
@@ -59,17 +62,9 @@ func (m *Menu) Image() *ebiten.Image {
 	return m.image
 }
 
-func (m *Menu) setCursor(cursor int) *ebiten.Image {
-	result, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
-
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(8), float64(16*cursor+16))
-	result.DrawImage(cursorImage, op)
-	return result
-}
-
 // Exit - メニューを閉じるときの処理
 func (m *Menu) Exit() {
 	m.cursor = 0
-	m.image = m.setCursor(0)
+	target, _ := ebiten.NewImageFromImage(menuImage, ebiten.FilterDefault)
+	m.image = util.SetCursor(target, 0)
 }

@@ -3,6 +3,13 @@ package util
 import (
 	"math/rand"
 	"time"
+
+	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
+)
+
+var (
+	cursorImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/cursor.png", ebiten.FilterDefault)
 )
 
 // Contains - 指定した要素を含んでいるか
@@ -43,4 +50,12 @@ func Chance(probability float64) bool {
 // IsSwitchCommand - コマンドが交代コマンドかどうか
 func IsSwitchCommand(command uint) bool {
 	return command >= 5 && command <= 9
+}
+
+// SetCursor - カーソルをtargetに描画する
+func SetCursor(target *ebiten.Image, cursor int) *ebiten.Image {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(8), float64(16*cursor+16))
+	target.DrawImage(cursorImage, op)
+	return target
 }
