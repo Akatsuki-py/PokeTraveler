@@ -9,6 +9,7 @@ import (
 	"github.com/Akatsuki-py/PokeTraveler/pkg/ethan"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/menu"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/save"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/stage"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/townmap"
@@ -37,6 +38,7 @@ type Game struct {
 	coolTime uint
 	Menu     menu.Menu
 	TownMap  townmap.TownMap
+	SaveData *save.Data
 }
 
 var game Game
@@ -49,18 +51,24 @@ var (
 )
 
 func initGame(game *Game) {
+	game.SaveData = save.New("./savedata.json")
 	char.Init()
 	sound.InitSE()
 	game.Mode = modeIntroduction
 }
 
 func initStage(game *Game) {
-	game.Ethan = *ethan.New(2, 37*16, 16*16)
+
+	avatarID := game.SaveData.Avatar.ID
+	pointX, pointY := game.SaveData.Point.X, game.SaveData.Point.Y
+
+	game.Ethan = *ethan.New(avatarID, pointX*16, pointY*16)
 	game.Mode = modeStage
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
 
-	game.Stage.Load("Oxalis City", 1)
+	stageName, stageIndex := game.SaveData.Point.Stage, game.SaveData.Point.Index
+	game.Stage.Load(stageName, stageIndex)
 }
 
 func render(screen *ebiten.Image) error {
@@ -83,28 +91,7 @@ func render(screen *ebiten.Image) error {
 	}
 
 	if game.Mode == modeIntroduction {
-		switch {
-		case game.Count < 150:
-			screen.DrawImage(creditImage, nil)
-		case game.Count < 210:
-			screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
-		case game.Count == 210:
-			screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
-			sound.ExitBGM()
-			sound.InitBGM("7.mp3", false)
-		case !isActionOK():
-			screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
-			if game.coolTime == 1 {
-				initStage(&game)
-			}
-		default:
-			screen.DrawImage(titleImage, nil)
-
-			if util.BtnStart() && isActionOK() {
-				game.coolTime = 20
-			}
-		}
-
+		renderIntroduction(screen)
 		return nil
 	}
 
@@ -267,6 +254,11 @@ func render(screen *ebiten.Image) error {
 			case "Map":
 				game.TownMap.Cursor.Valid = false
 				game.Mode = modeTownMap
+			case "Save":
+				game.SaveData.Point.Stage = game.Stage.Name()
+				game.SaveData.Point.Index = game.Stage.Index
+				game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
+				save.Write(game.SaveData)
 			case "Exit":
 				game.Menu.Exit()
 				game.Mode = modeStage
@@ -435,4 +427,28 @@ func renderTownMap(screen *ebiten.Image) {
 	avatar := game.Ethan.AvatarDown()
 	tm := game.TownMap.Open(stage, avatar)
 	screen.DrawImage(tm, nil)
+}
+
+func renderIntroduction(screen *ebiten.Image) {
+	switch {
+	case game.Count < 150:
+		screen.DrawImage(creditImage, nil)
+	case game.Count < 210:
+		screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
+	case game.Count == 210:
+		screen.Fill(color.NRGBA{0x00, 0x00, 0x00, 0xff})
+		sound.ExitBGM()
+		sound.InitBGM("7.mp3", false)
+	case !isActionOK():
+		screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
+		if game.coolTime == 1 {
+			initStage(&game)
+		}
+	default:
+		screen.DrawImage(titleImage, nil)
+
+		if util.BtnStart() && isActionOK() {
+			game.coolTime = 20
+		}
+	}
 }

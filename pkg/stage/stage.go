@@ -22,6 +22,7 @@ import (
 // Stage - マップのデータ
 type Stage struct {
 	name       string
+	Index      int              // マップのIndex
 	Width      int              // マップの横幅(タイル)
 	Height     int              // マップの立幅(タイル)
 	Image      *ebiten.Image    // マップ全体を画像データにしたもの
@@ -93,6 +94,7 @@ func (stage *Stage) Load(stagename string, index int) {
 	}
 
 	stage.name = stagename
+	stage.Index = index
 	stage.loadActions(fmt.Sprintf("%s/%s/map%d/actions.json", assetPath, stagename, index))
 	stage.loadObjects(fmt.Sprintf("%s/%s/map%d/objects.json", assetPath, stagename, index))
 	stage.loadWarps(fmt.Sprintf("%s/%s/map%d/warp.json", assetPath, stagename, index))
