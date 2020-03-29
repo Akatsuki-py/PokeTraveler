@@ -41,6 +41,7 @@ type Game struct {
 	TownMap  townmap.TownMap
 	SaveData *save.Data
 	YesNo    *window.YesNoWindow
+	PlayData *window.PlayData
 }
 
 var game Game
@@ -69,6 +70,7 @@ func initStage(game *Game) {
 	game.TownMap = *townmap.New()
 	game.Menu = *menu.New()
 	game.YesNo = window.NewYesNoWindow()
+	game.PlayData = window.NewPlayData()
 
 	stageName, stageIndex := game.SaveData.Point.Stage, game.SaveData.Point.Index
 	game.Stage.Load(stageName, stageIndex)
@@ -267,7 +269,8 @@ func render(screen *ebiten.Image) error {
 				game.Mode = modeTownMap
 			case "Save":
 				game.Mode = modeSave
-				win = window.New(save.Message("ethan"))
+				game.PlayData.SetImage(game.SaveData.Avatar.Name)
+				win = window.New(save.Message(game.SaveData.Avatar.Name))
 				win.Render(screen)
 			case "Exit":
 				game.Menu.Exit()
@@ -319,6 +322,7 @@ func render(screen *ebiten.Image) error {
 	case modeSave:
 		// セーブ画面
 		win.Render(screen)
+		renderPlayData(screen, 32, 0)
 		if win.ThisPage() == save.ConfirmMessage {
 			renderYesNo(screen)
 		}
@@ -515,4 +519,10 @@ func renderIntroduction(screen *ebiten.Image) {
 			game.coolTime = 20
 		}
 	}
+}
+
+func renderPlayData(screen *ebiten.Image, x, y int) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(x), float64(y))
+	screen.DrawImage(game.PlayData.Image(), op)
 }
