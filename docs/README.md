@@ -1,3 +1,5 @@
+![logo](./logo.png)
+
 # PokeTraveler
 
 **Note: This project is still in progress!**
@@ -11,11 +13,14 @@ You don't have Pokemon and can just concentrate on enjoying walking around the P
 
 You can edit the world as you like by editing the asset folder.
 
-Currently there is no other way than editing json directly, but we will add a GUI editing screen in a future update.
+Currently there is no other way than editing json directly, but I'll add a GUI editing tool in a future update.
 
 ## Usage
 
+requirement: make and golang 1.13
+
 ```sh
+$ git clone https://github.com/Akatsuki-py/PokeTraveler.git
 $ make build
 $ ./poketraveler
 ```
