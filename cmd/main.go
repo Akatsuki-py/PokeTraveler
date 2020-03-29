@@ -319,7 +319,10 @@ func render(screen *ebiten.Image) error {
 	case modeSave:
 		// セーブ画面
 		win.Render(screen)
-		renderYesNo(screen)
+		if win.ThisPage() == save.ConfirmMessage {
+			renderYesNo(screen)
+		}
+
 		if isActionOK() && win.ThisPageEnd() {
 			switch {
 			case util.BtnA() && game.YesNo.Yes():
@@ -327,11 +330,6 @@ func render(screen *ebiten.Image) error {
 				game.coolTime = 17
 
 				if win.IsEnd() {
-					// 現在の状態をセーブ
-					game.SaveData.Point.Stage = game.Stage.Name()
-					game.SaveData.Point.Index = game.Stage.Index
-					game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
-					save.Write(game.SaveData)
 					game.Mode = modeStage
 				} else {
 					win.NextPage()
@@ -353,6 +351,15 @@ func render(screen *ebiten.Image) error {
 				sound.Select()
 				game.YesNo.SetNo()
 				game.coolTime = 17
+			case win.ThisPage() == save.SavingMessage:
+				// 現在の状態をセーブ
+				game.SaveData.Point.Stage = game.Stage.Name()
+				game.SaveData.Point.Index = game.Stage.Index
+				game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
+				save.Write(game.SaveData)
+
+				sound.Save()
+				win.NextPage()
 			}
 		}
 	}

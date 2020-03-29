@@ -92,3 +92,8 @@ func (win *Window) ThisPageEnd() bool {
 	}
 	return win.charPtr+1 >= uint(len(win.Text[win.page]))
 }
+
+// ThisPage - 現在のページのテキストを返す
+func (win *Window) ThisPage() string {
+	return win.Text[win.page]
+}

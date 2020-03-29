@@ -20,6 +20,7 @@ var (
 	GoOutsideSE = &WAV{}
 	LedgeSE     = &WAV{}
 	MenuSE      = &WAV{}
+	SaveSE      = &WAV{}
 )
 
 func setSE(path string, se *WAV) {
@@ -76,4 +77,8 @@ func Ledge() {
 
 func Menu() {
 	PlaySE(MenuSE)
+}
+
+func Save() {
+	PlaySE(SaveSE)
 }
