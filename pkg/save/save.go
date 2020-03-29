@@ -2,8 +2,15 @@ package save
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
+)
+
+const (
+	ConfirmMessage  = "Would you like to\nsave the game?"
+	SavingMessage   = "SAVING. DON'T TURN\nOFF THE POWER."
+	CompleteMessage = "%s saved\nthe game."
 )
 
 // Data - セーブデータ情報を格納する
@@ -72,4 +79,14 @@ func CreateNewData(avatarID int, avatarName string) *Data {
 	}
 	Write(savedata)
 	return savedata
+}
+
+// Message - セーブメッセージを返す
+func Message(name string) []string {
+	return []string{
+		ConfirmMessage,
+		SavingMessage,
+		fmt.Sprintf(CompleteMessage, name),
+		":end",
+	}
 }

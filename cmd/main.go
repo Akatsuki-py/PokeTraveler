@@ -93,11 +93,13 @@ func render(screen *ebiten.Image) error {
 		return nil
 	}
 
+	// イントロダクションモード(クレジットやタイトルの描画モード)
 	if game.Mode == modeIntroduction {
 		renderIntroduction(screen)
 		return nil
 	}
 
+	// それ以外は基本的にステージを描画
 	renderStage(screen)
 
 	// オブジェクトの動作
@@ -105,10 +107,12 @@ func render(screen *ebiten.Image) error {
 		moveObject()
 	}
 
+	// オブジェクトの描画
 	renderObject(screen)
 
 	switch game.Mode {
 	case modeStage:
+		// ステージ画面
 		// 主人公がマス目の間を移動中
 		if game.Ethan.Moving() {
 			property := game.Stage.GetProp(game.Ethan.X, game.Ethan.Y)
@@ -221,8 +225,9 @@ func render(screen *ebiten.Image) error {
 		renderEthan(screen)
 
 	case modeWindow:
+		// メッセージウィンドウ描画モード
 		win.Render(screen)
-		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() {
+		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() && win.ThisPageEnd() {
 			if win.IsEnd() {
 				game.Mode = modeStage
 			} else {
@@ -234,12 +239,14 @@ func render(screen *ebiten.Image) error {
 		renderEthan(screen)
 
 	case modeWarp:
+		// ステージ間の移動中
 		screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
 		if game.coolTime == 0 {
 			game.Mode = modeStage
 		}
 
 	case modeOneWay:
+		// 段差移動中
 		if game.coolTime > 0 {
 			game.Ethan.GoAhead()
 		} else {
@@ -248,6 +255,7 @@ func render(screen *ebiten.Image) error {
 		renderEthan(screen)
 
 	case modeMenu:
+		// メニュー画面を開いている
 		switch {
 		case util.BtnA() && isActionOK():
 			sound.Select()
@@ -259,6 +267,8 @@ func render(screen *ebiten.Image) error {
 				game.Mode = modeTownMap
 			case "Save":
 				game.Mode = modeSave
+				win = window.New(save.Message("ethan"))
+				win.Render(screen)
 			case "Exit":
 				game.Menu.Exit()
 				game.Mode = modeStage
@@ -284,6 +294,7 @@ func render(screen *ebiten.Image) error {
 		renderMenu(screen)
 
 	case modeTownMap:
+		// タウンマップを開いている
 		if game.TownMap.Cursor.Moving() {
 			game.TownMap.Cursor.GoAhead()
 		} else {
@@ -306,16 +317,25 @@ func render(screen *ebiten.Image) error {
 		renderTownMap(screen)
 
 	case modeSave:
+		// セーブ画面
+		win.Render(screen)
 		renderYesNo(screen)
-		if isActionOK() {
+		if isActionOK() && win.ThisPageEnd() {
 			switch {
 			case util.BtnA() && game.YesNo.Yes():
 				sound.Select()
 				game.coolTime = 17
-				game.SaveData.Point.Stage = game.Stage.Name()
-				game.SaveData.Point.Index = game.Stage.Index
-				game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
-				save.Write(game.SaveData)
+
+				if win.IsEnd() {
+					// 現在の状態をセーブ
+					game.SaveData.Point.Stage = game.Stage.Name()
+					game.SaveData.Point.Index = game.Stage.Index
+					game.SaveData.Point.X, game.SaveData.Point.Y = game.Ethan.X/16, game.Ethan.Y/16
+					save.Write(game.SaveData)
+					game.Mode = modeStage
+				} else {
+					win.NextPage()
+				}
 			case util.BtnA() && !game.YesNo.Yes():
 				sound.Select()
 				game.Mode = modeMenu
@@ -342,7 +362,7 @@ func render(screen *ebiten.Image) error {
 
 func renderYesNo(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(0), float64(64))
+	op.GeoM.Translate(float64(0), float64(56))
 	screen.DrawImage(game.YesNo.Image(), op)
 }
 
