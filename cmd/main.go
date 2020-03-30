@@ -261,15 +261,15 @@ func render(screen *ebiten.Image) error {
 			game.coolTime = 17
 
 			switch game.Menu.Current() {
-			case "Map":
+			case menu.Map:
 				game.TownMap.Cursor.Valid = false
 				game.Mode = modeTownMap
-			case "Save":
+			case menu.Save:
 				game.Mode = modeSave
 				game.PlayData.SetImage(game.SaveData.Avatar.Name, game.SaveData.Avatar.Minute)
 				win = window.New(save.Message(game.SaveData.Avatar.Name))
 				win.Render(screen)
-			case "Exit":
+			case menu.Exit:
 				game.Menu.Exit()
 				game.Mode = modeStage
 			}

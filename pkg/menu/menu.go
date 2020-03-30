@@ -7,6 +7,12 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
+const (
+	Map  = "Map"
+	Save = "Save"
+	Exit = "Exit"
+)
+
 var (
 	menuImage, _, _ = ebitenutil.NewImageFromFile("asset/menu/menu.png", ebiten.FilterDefault)
 )
@@ -19,7 +25,7 @@ type Menu struct {
 
 func New() *Menu {
 	m := &Menu{
-		list: []string{"Map", "Save", "Exit"},
+		list: []string{Map, Save, Exit},
 	}
 
 	for i, item := range m.list {
