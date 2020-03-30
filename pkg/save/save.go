@@ -31,8 +31,9 @@ type Point struct {
 
 // Avatar - ユーザーのアバターデータ
 type Avatar struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID     int    `json:"id"`     // アバターID
+	Name   string `json:"name"`   // アバターネーム
+	Minute uint   `json:"minute"` // プレイ時間(分)
 }
 
 // FlagData - ユーザーのフラグデータ
@@ -72,8 +73,9 @@ func CreateNewData(avatarID int, avatarName string) *Data {
 			Y:     16,
 		},
 		Avatar: Avatar{
-			ID:   avatarID,
-			Name: avatarName,
+			ID:     avatarID,
+			Name:   avatarName,
+			Minute: 0,
 		},
 		FlagData: FlagData{},
 	}

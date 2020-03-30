@@ -30,6 +30,11 @@ const (
 	modeSave
 )
 
+const (
+	secondFrame = 60
+	minuteFrame = 3600
+)
+
 // Game ゲーム情報を管理する
 type Game struct {
 	Count    int
@@ -81,15 +86,7 @@ func render(screen *ebiten.Image) error {
 		initGame(&game)
 	}
 
-	defer func() {
-		game.Count++
-		if game.Count%2 == 0 && win != nil {
-			win.IncrementCharPointer()
-		}
-		if game.coolTime > 0 {
-			game.coolTime--
-		}
-	}()
+	defer eachFrame()
 
 	if ebiten.IsDrawingSkipped() {
 		return nil
@@ -269,7 +266,7 @@ func render(screen *ebiten.Image) error {
 				game.Mode = modeTownMap
 			case "Save":
 				game.Mode = modeSave
-				game.PlayData.SetImage(game.SaveData.Avatar.Name)
+				game.PlayData.SetImage(game.SaveData.Avatar.Name, game.SaveData.Avatar.Minute)
 				win = window.New(save.Message(game.SaveData.Avatar.Name))
 				win.Render(screen)
 			case "Exit":
@@ -369,6 +366,21 @@ func render(screen *ebiten.Image) error {
 	}
 
 	return nil
+}
+
+// 各フレームごとの処理
+func eachFrame() {
+	game.Count++
+	if game.Count%2 == 0 && win != nil {
+		win.IncrementCharPointer()
+	}
+	if game.coolTime > 0 {
+		game.coolTime--
+	}
+
+	if game.Count%minuteFrame == 0 {
+		game.SaveData.Avatar.Minute++
+	}
 }
 
 func renderYesNo(screen *ebiten.Image) {

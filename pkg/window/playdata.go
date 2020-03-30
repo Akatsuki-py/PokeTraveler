@@ -1,6 +1,8 @@
 package window
 
 import (
+	"fmt"
+
 	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -27,10 +29,22 @@ func (pd *PlayData) Image() *ebiten.Image {
 }
 
 // SetImage - set window image
-func (pd *PlayData) SetImage(name string) {
+func (pd *PlayData) SetImage(name string, minutes uint) {
 	newImage, _ := ebiten.NewImageFromImage(playDataImage, ebiten.FilterDefault)
-	time := "00:00" // TODO
+	time := getPlayTime(minutes)
 	char.RenderString(newImage, name, 64, 16)
-	char.RenderString(newImage, time, 80, 64)
+
+	start := 96 - 8*(len(time)-3) // プレイ時間によって"xx:yy"の長さが変わるので調節してやる必要がある
+	char.RenderString(newImage, time, float64(start), 64)
 	pd.image = newImage
+}
+
+func getPlayTime(minutes uint) string {
+	var hours uint
+	hours, minutes = minutes/60, minutes%60
+
+	if minutes < 10 {
+		return fmt.Sprintf("%d:0%d", hours, minutes)
+	}
+	return fmt.Sprintf("%d:%d", hours, minutes)
 }
