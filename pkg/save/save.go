@@ -13,6 +13,16 @@ const (
 	CompleteMessage = "%s saved\nthe game."
 )
 
+const (
+	InitStage      = "Oxalis City"
+	InitStageIndex = 1
+	InitX          = 37
+	InitY          = 16
+	InitAvatarID   = 1
+	InitAvatarName = "ethan"
+	InitMinute     = 0
+)
+
 // Data - セーブデータ情報を格納する
 type Data struct {
 	Point    Point    `json:"point"`
@@ -67,10 +77,10 @@ func Write(sav *Data) {
 func CreateNewData(avatarID int, avatarName string) *Data {
 	savedata := &Data{
 		Point: Point{
-			Stage: "Oxalis City",
-			Index: 1,
-			X:     37,
-			Y:     16,
+			Stage: InitStage,
+			Index: InitStageIndex,
+			X:     InitX,
+			Y:     InitY,
 		},
 		Avatar: Avatar{
 			ID:     avatarID,

@@ -28,6 +28,7 @@ const (
 	modeTownMap
 	modeIntroduction
 	modeSave
+	modeGameStart
 )
 
 const (
@@ -37,16 +38,17 @@ const (
 
 // Game ゲーム情報を管理する
 type Game struct {
-	Count    int
-	Stage    stage.Stage
-	Ethan    ethan.Ethan
-	Mode     int
-	coolTime uint
-	Menu     menu.Menu
-	TownMap  townmap.TownMap
-	SaveData *save.Data
-	YesNo    *window.YesNoWindow
-	PlayData *window.PlayData
+	Count     int
+	Stage     stage.Stage
+	Ethan     ethan.Ethan
+	Mode      int
+	coolTime  uint
+	Menu      menu.Menu
+	TownMap   townmap.TownMap
+	SaveData  *save.Data
+	YesNo     *window.YesNoWindow
+	PlayData  *window.PlayData
+	GameStart *window.GameStartWindow
 }
 
 var game Game
@@ -63,12 +65,21 @@ func initGame(game *Game) {
 	char.Init()
 	sound.InitSE()
 	game.Mode = modeIntroduction
+	game.GameStart = window.NewGameStartWindow(game.SaveData.Valid)
 }
 
-func initStage(game *Game) {
+func initStage(game *Game, continueGame bool) {
 
 	avatarID := game.SaveData.Avatar.ID
 	pointX, pointY := game.SaveData.Point.X, game.SaveData.Point.Y
+	stageName, stageIndex := game.SaveData.Point.Stage, game.SaveData.Point.Index
+	// 『NEW GAME』を選んだ場合は初期化する
+	if !continueGame {
+		avatarID = save.InitAvatarID
+		pointX, pointY = save.InitX, save.InitY
+		stageName, stageIndex = save.InitStage, save.InitStageIndex
+		game.SaveData.Avatar.Minute = 0
+	}
 
 	game.Ethan = *ethan.New(avatarID, pointX*16, pointY*16)
 	game.Mode = modeStage
@@ -76,8 +87,6 @@ func initStage(game *Game) {
 	game.Menu = *menu.New()
 	game.YesNo = window.NewYesNoWindow()
 	game.PlayData = window.NewPlayData()
-
-	stageName, stageIndex := game.SaveData.Point.Stage, game.SaveData.Point.Index
 	game.Stage.Load(stageName, stageIndex)
 }
 
@@ -92,9 +101,13 @@ func render(screen *ebiten.Image) error {
 		return nil
 	}
 
-	// イントロダクションモード(クレジットやタイトルの描画モード)
 	if game.Mode == modeIntroduction {
+		// イントロダクションモード(クレジットやタイトルの描画モード)
 		renderIntroduction(screen)
+		return nil
+	} else if game.Mode == modeGameStart {
+		// タイトルの後の『つづきから はじめる』とかを選択するところ
+		renderGameStart(screen)
 		return nil
 	}
 
@@ -522,7 +535,7 @@ func renderIntroduction(screen *ebiten.Image) {
 	case !isActionOK():
 		screen.Fill(color.NRGBA{0xff, 0xff, 0xdd, 0xff})
 		if game.coolTime == 1 {
-			initStage(&game)
+			game.Mode = modeGameStart
 		}
 	default:
 		screen.DrawImage(titleImage, nil)
@@ -537,4 +550,33 @@ func renderPlayData(screen *ebiten.Image, x, y int) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(x), float64(y))
 	screen.DrawImage(game.PlayData.Image(), op)
+}
+
+func renderGameStart(screen *ebiten.Image) {
+	screen.Fill(color.NRGBA{248, 248, 248, 0xff})
+	switch {
+	case util.BtnA() && isActionOK():
+		switch game.GameStart.Mode() {
+		case window.GameStartContinue:
+			// つづきから
+			initStage(&game, true)
+		case window.GameStartNewGame:
+			// はじめから
+			initStage(&game, false)
+		case window.GameStartOption:
+			// 設定 今は何もしない
+		}
+		sound.Select()
+		game.coolTime = 17
+
+	case util.KeyUp() && isActionOK():
+		game.GameStart.Decrement()
+		game.coolTime = 17
+
+	case util.KeyDown() && isActionOK():
+		game.GameStart.Increment()
+		game.coolTime = 17
+	}
+
+	screen.DrawImage(game.GameStart.Image(), nil)
 }

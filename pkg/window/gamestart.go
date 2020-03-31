@@ -71,7 +71,7 @@ func (gsw *GameStartWindow) Increment() {
 		gsw.cursor = 0
 	}
 
-	gsw.setCursor(gsw.cursor)
+	gsw.image = gsw.setCursor(gsw.cursor)
 }
 
 // Decrement cursor
@@ -86,7 +86,7 @@ func (gsw *GameStartWindow) Decrement() {
 		gsw.cursor = limit - 1
 	}
 
-	gsw.setCursor(gsw.cursor)
+	gsw.image = gsw.setCursor(gsw.cursor)
 }
 
 func (gsw *GameStartWindow) setCursor(cursor int) *ebiten.Image {
@@ -98,8 +98,7 @@ func (gsw *GameStartWindow) setCursor(cursor int) *ebiten.Image {
 		target, _ = ebiten.NewImageFromImage(newGameImage, ebiten.FilterDefault)
 	}
 
-	util.SetCursor(target, cursor, 16)
-	return target
+	return util.SetCursor(target, cursor, 16)
 }
 
 // Image - getter of image
