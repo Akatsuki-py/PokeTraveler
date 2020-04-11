@@ -7,6 +7,7 @@ import (
 
 	"github.com/Akatsuki-py/PokeTraveler/pkg/char"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/pokemon"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
@@ -32,6 +33,7 @@ type Stage struct {
 	Warps      []*Warp
 	BGM        *BGM
 	Meta       *Meta
+	Pokemons   []*pokemon.Pokemon // マップ上のポケモンオブジェクトの情報
 }
 
 const (
@@ -91,6 +93,7 @@ func (stage *Stage) Load(stagename string, index int) {
 	stage.loadObjects(fmt.Sprintf("%s/%s/map%d/objects.json", assetPath, stagename, index))
 	stage.loadWarps(fmt.Sprintf("%s/%s/map%d/warp.json", assetPath, stagename, index))
 	stage.loadBGM(fmt.Sprintf("%s/%s/map%d/bgm.json", assetPath, stagename, index))
+	stage.loadPokemons(fmt.Sprintf("%s/%s/map%d/pokemon.json", assetPath, stagename, index))
 
 	// メタデータ
 	stage.Meta = newMeta(stagename)
