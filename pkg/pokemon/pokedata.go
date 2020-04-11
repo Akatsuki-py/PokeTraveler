@@ -15,8 +15,8 @@ var (
 // PokeData - ゲームのステートに左右されないデータ
 type PokeData struct {
 	ID    int              // ポケモンの図鑑番号
-	Icon  [2]*ebiten.Image // miniDexのアイコン
-	Image *ebiten.Image    // 対戦とかで出てくるグラフィック
+	icon  [2]*ebiten.Image // miniDexのアイコン
+	image *ebiten.Image    // 対戦とかで出てくるグラフィック
 }
 
 var PokeDex map[int]*PokeData
@@ -35,12 +35,12 @@ func newPokeData(ID int) *PokeData {
 	for i := 0; i < 2; i++ {
 		iconPath := fmt.Sprintf(iconPath, ID, i)
 		icon, _, _ := ebitenutil.NewImageFromFile(iconPath, ebiten.FilterDefault)
-		pd.Icon[i] = icon
+		pd.icon[i] = icon
 	}
 
 	imagePath := fmt.Sprintf(imagePath, toString(ID))
 	img, _, _ := ebitenutil.NewImageFromFile(imagePath, ebiten.FilterDefault)
-	pd.Image = img
+	pd.image = img
 
 	return pd
 }
@@ -54,4 +54,19 @@ func toString(ID int) string {
 	default:
 		return fmt.Sprintf("%d", ID)
 	}
+}
+
+// Icon - miniDexのアイコンを取得する フレームによって変わる
+func (p *PokeData) Icon(frame int) *ebiten.Image {
+	switch {
+	case frame%16 < 8:
+		return p.icon[0]
+	default:
+		return p.icon[1]
+	}
+}
+
+// Image - ポケモンのイメージを取得する
+func (p *PokeData) Image() *ebiten.Image {
+	return p.image
 }
