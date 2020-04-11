@@ -17,8 +17,8 @@ func Init() {
 func NewPokemon(ID, x, y int, texts []string) *Pokemon {
 	p := &Pokemon{
 		PokeData: PokeDex[ID],
-		X:        x,
-		Y:        y,
+		X:        x * 16,
+		Y:        y * 16,
 		Texts:    texts,
 	}
 	return p

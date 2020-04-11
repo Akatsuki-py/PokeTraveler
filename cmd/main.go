@@ -9,6 +9,7 @@ import (
 	"github.com/Akatsuki-py/PokeTraveler/pkg/ethan"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/menu"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/object"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/pokemon"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/save"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
 	"github.com/Akatsuki-py/PokeTraveler/pkg/stage"
@@ -64,6 +65,7 @@ func initGame(game *Game) {
 	game.SaveData = save.New("./savedata.json")
 	char.Init()
 	sound.InitSE()
+	pokemon.Init()
 	game.Mode = modeIntroduction
 	game.GameStart = window.NewGameStartWindow(game.SaveData.Valid)
 }
@@ -121,6 +123,9 @@ func render(screen *ebiten.Image) error {
 
 	// オブジェクトの描画
 	renderObject(screen)
+
+	// ポケモンの描画
+	renderPokemon(screen)
 
 	switch game.Mode {
 	case modeStage:
@@ -181,6 +186,7 @@ func render(screen *ebiten.Image) error {
 
 			case util.BtnA() && isActionOK():
 				object := game.Stage.GetObject(game.Ethan.Ahead())
+				poke := game.Stage.GetPokemon(game.Ethan.Ahead())
 				if action := game.Stage.GetAction(game.Ethan.Ahead()); action != nil {
 					// アクションがあるならそのアクションを取らせる
 					if action.Type == "text" {
@@ -193,6 +199,11 @@ func render(screen *ebiten.Image) error {
 					game.Mode = modeWindow
 					object.SetDirectionByPoint(game.Ethan.X, game.Ethan.Y)
 					win = window.New(object.Text)
+					win.Render(screen)
+				} else if poke != nil {
+					// ポケモンとの会話
+					game.Mode = modeWindow
+					win = window.New(poke.Texts)
 					win.Render(screen)
 				}
 				game.coolTime = 17
@@ -208,6 +219,7 @@ func render(screen *ebiten.Image) error {
 			if goAhead {
 				property := game.Stage.GetProp(game.Ethan.Ahead()) // 障害物、段差
 				object := game.Stage.GetObject(game.Ethan.Ahead()) // 人
+				poke := game.Stage.GetPokemon(game.Ethan.Ahead())  // ポケモンオブジェクト
 				action := game.Stage.GetAction(game.Ethan.Ahead()) // アクションオブジェクト
 
 				if property.Action == 1 && action != nil && action.Type == "text" {
@@ -225,7 +237,7 @@ func render(screen *ebiten.Image) error {
 				} else if warp := game.Stage.GetWarp(game.Ethan.Ahead()); warp != nil && warp.InOut == "out" {
 					// 移動先にワープブロックがある
 					changeStage(screen, warp)
-				} else if property.Block == 0 && object == nil {
+				} else if property.Block == 0 && object == nil && poke == nil {
 					// 移動先に何もない
 					game.Ethan.GoAhead()
 				} else if object == nil {
@@ -241,6 +253,7 @@ func render(screen *ebiten.Image) error {
 		win.Render(screen)
 		if ebiten.IsKeyPressed(ebiten.KeyS) && isActionOK() && win.ThisPageEnd() {
 			if win.IsEnd() {
+				sound.Select()
 				game.Mode = modeStage
 			} else {
 				win.NextPage()
@@ -413,6 +426,14 @@ func renderObject(screen *ebiten.Image) {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(64-game.Ethan.X+obj.X), float64(64-game.Ethan.Y+obj.Y-4))
 		screen.DrawImage(obj.Avatar(), op)
+	}
+}
+
+func renderPokemon(screen *ebiten.Image) {
+	for _, p := range game.Stage.Pokemons {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(64-game.Ethan.X+p.X), float64(64-game.Ethan.Y+p.Y-4))
+		screen.DrawImage(p.Icon(game.Count), op)
 	}
 }
 

@@ -21,7 +21,7 @@ type JSONPokemon struct {
 
 func (stage *Stage) GetPokemon(x, y int) (target *pokemon.Pokemon) {
 	for _, p := range stage.Pokemons {
-		if p.X*16 == x && p.Y*16 == y {
+		if p.X == x && p.Y == y {
 			target = p
 			break
 		}

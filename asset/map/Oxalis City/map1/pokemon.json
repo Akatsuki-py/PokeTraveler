@@ -1,9 +1,9 @@
 {
     "pokemons": [
         {
-            "id": 245,
-            "x": 4,
-            "y": 4,
+            "id": 6,
+            "x": 16,
+            "y": 16,
             "texts": [
                 "GYAAAAA!",
                 ":end"

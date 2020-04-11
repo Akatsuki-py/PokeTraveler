@@ -19,7 +19,7 @@ type PokeData struct {
 	image *ebiten.Image    // 対戦とかで出てくるグラフィック
 }
 
-var PokeDex map[int]*PokeData
+var PokeDex map[int]*PokeData = map[int]*PokeData{}
 
 func initPokeDex() {
 	for i := 1; i < 251+1; i++ {
@@ -59,7 +59,7 @@ func toString(ID int) string {
 // Icon - miniDexのアイコンを取得する フレームによって変わる
 func (p *PokeData) Icon(frame int) *ebiten.Image {
 	switch {
-	case frame%16 < 8:
+	case frame%32 < 16:
 		return p.icon[0]
 	default:
 		return p.icon[1]
