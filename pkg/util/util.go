@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -20,6 +21,17 @@ func Contains(s []string, e string) bool {
 		}
 	}
 	return false
+}
+
+func PaddingID(ID int) string {
+	switch {
+	case ID < 10:
+		return fmt.Sprintf("00%d", ID)
+	case ID < 100:
+		return fmt.Sprintf("0%d", ID)
+	default:
+		return fmt.Sprintf("%d", ID)
+	}
 }
 
 // PaddingLeft - 文字列を指定した文字数になるまで空白で前方にパディングする

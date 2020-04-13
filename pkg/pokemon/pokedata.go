@@ -3,6 +3,8 @@ package pokemon
 import (
 	"fmt"
 
+	"github.com/Akatsuki-py/PokeTraveler/pkg/sound"
+	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
@@ -38,22 +40,11 @@ func newPokeData(ID int) *PokeData {
 		pd.icon[i] = icon
 	}
 
-	imagePath := fmt.Sprintf(imagePath, toString(ID))
+	imagePath := fmt.Sprintf(imagePath, util.PaddingID(ID))
 	img, _, _ := ebitenutil.NewImageFromFile(imagePath, ebiten.FilterDefault)
 	pd.image = img
 
 	return pd
-}
-
-func toString(ID int) string {
-	switch {
-	case ID < 10:
-		return fmt.Sprintf("00%d", ID)
-	case ID < 100:
-		return fmt.Sprintf("0%d", ID)
-	default:
-		return fmt.Sprintf("%d", ID)
-	}
 }
 
 // Icon - miniDexのアイコンを取得する フレームによって変わる
@@ -69,4 +60,9 @@ func (p *PokeData) Icon(frame int) *ebiten.Image {
 // Image - ポケモンのイメージを取得する
 func (p *PokeData) Image() *ebiten.Image {
 	return p.image
+}
+
+// Cry - 鳴き声を出す
+func (p *PokeData) Cry() {
+	sound.Cry(p.ID)
 }

@@ -21,6 +21,7 @@ var (
 	LedgeSE     = &WAV{}
 	MenuSE      = &WAV{}
 	SaveSE      = &WAV{}
+	CrySE       = map[int]*WAV{}
 )
 
 func setSE(path string, se *WAV) {
@@ -81,4 +82,8 @@ func Menu() {
 
 func Save() {
 	PlaySE(SaveSE)
+}
+
+func Cry(ID int) {
+	PlaySE(CrySE[ID])
 }

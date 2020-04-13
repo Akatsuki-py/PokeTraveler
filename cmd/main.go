@@ -203,6 +203,7 @@ func render(screen *ebiten.Image) error {
 				} else if poke != nil {
 					// ポケモンとの会話
 					game.Mode = modeWindow
+					poke.Cry()
 					win = window.New(poke.Texts)
 					win.Render(screen)
 				}

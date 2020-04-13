@@ -3,6 +3,7 @@ package sound
 import (
 	"fmt"
 
+	"github.com/Akatsuki-py/PokeTraveler/pkg/util"
 	"github.com/hajimehoshi/ebiten/audio"
 )
 
@@ -23,6 +24,11 @@ func InitSE() {
 	setSE(assetPath+"/se/Ledge.wav", LedgeSE)
 	setSE(assetPath+"/se/Menu.wav", MenuSE)
 	setSE(assetPath+"/se/Save.wav", SaveSE)
+
+	for i := 1; i <= 251; i++ {
+		cry := fmt.Sprintf(assetPath+"/cry/%sCry.wav", util.PaddingID(i))
+		CrySE[i] = NewSE(cry)
+	}
 }
 
 func InitBGM(bgmname string, fade bool) {
