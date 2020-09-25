@@ -1,3 +1,4 @@
 *.exe
 poketraveler
 savedata.json
+.DS_Store
